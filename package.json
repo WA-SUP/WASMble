@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "postinstall": "prisma generate",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky"
   },
   "dependencies": {
     "@babel/parser": "^7.25.3",
