@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model PerformanceReport {
+  id                       String   @id @default(uuid())
+  createdAt                DateTime @default(now()) @db.Timestamptz(6)
+  transpiledAsCode         String
+  functionCode             String
+  wasmProcessingTimeMs     Int
+  jsProcessingTimeMs       Int
+  memoryTrackingResult     MemoryStates[]
+}
+
+model MemoryStates {
+  id                  String  @id @default(uuid())
+  type                String
+  memoryUsage         Int
+  cpuUsage            Int
+  performanceReport   PerformanceReport @relation(fields: [performanceReportId], references: [id])
+  performanceReportId String
+}
