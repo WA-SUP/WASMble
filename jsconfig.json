@@ -3,9 +3,11 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@components/*": ["components/*"],
-      "@utils/*": ["utils/*"],
-      "@logic/*": ["logic/*"],
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/utils/*"],
+      "@logic/*": ["src/logic/*"],
+      "@public/*": ["public/*"]
     }
   }
 }
