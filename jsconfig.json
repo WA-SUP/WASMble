@@ -4,8 +4,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@utils/*": ["utils/*"],
-      "@logic/*": ["logic/*"],
+      "@utils/*": ["src/utils/*"],
+      "@logic/*": ["src/logic/*"],
       "@public/*": ["public/*"]
     }
   }
