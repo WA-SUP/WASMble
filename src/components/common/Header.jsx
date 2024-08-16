@@ -7,7 +7,7 @@ export default function Header() {
     <>
       <header className="mx-6 py-3 border-b border-slate-200/10">
         <div>
-          <Image src={logo} alt="Wasmble Logo Image" width={200} />
+          <Image src={logo} alt="Wasmble Logo Image" width={200} priority />
         </div>
       </header>
     </>
