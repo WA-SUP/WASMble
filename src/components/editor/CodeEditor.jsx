@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Editor from "@monaco-editor/react";
 
-import { CODE_EDITOR_DEFAULT_VALUE } from "@/constants/constant";
+import { CODE_EDITOR_DEFAULT_VALUE } from "@constants/constant";
 
 export default function CodeEditor({ onCodeChange }) {
   const editorRef = useRef(null);

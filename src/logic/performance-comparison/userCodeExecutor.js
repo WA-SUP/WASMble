@@ -1,4 +1,4 @@
-import executeVmCode from "@/utils/vmCodeExecutor";
+import executeVmCode from "@utils/vmCodeExecutor";
 
 function validateErrorResult(userResult) {
   if (typeof userResult === "object") {

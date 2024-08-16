@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import Button from "@/components/button/Button";
-import CodeEditor from "@/components/editor/CodeEditor";
+import Button from "@components/button/Button";
+import CodeEditor from "@components/editor/CodeEditor";
 
 export default function CodeEditorWrapper() {
   const [userWrittenCode, setUserWrittenCode] = useState("");

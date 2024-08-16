@@ -1,4 +1,4 @@
-import CodeEditorWrapper from "@/components/editor/CodeEditorWrapper";
+import CodeEditorWrapper from "@components/editor/CodeEditorWrapper";
 import ContentBox from "@components/common/ContentBox";
 
 export default function Home() {
