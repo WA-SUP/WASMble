@@ -1,6 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
-async function isDatabaseConnected(prisma) {
+async function checkDatabaseConnected(prisma) {
   try {
     await prisma.$queryRaw`SELECT 1`;
     return true;
@@ -15,7 +15,7 @@ async function isDatabaseConnected(prisma) {
 describe("데이터베이스", () => {
   it("데이터베이스와 연결되어야 한다.", async () => {
     const prisma = new PrismaClient();
-    const isConnected = await isDatabaseConnected(prisma);
+    const isConnected = await checkDatabaseConnected(prisma);
 
     expect(isConnected).toBe(true);
   });
