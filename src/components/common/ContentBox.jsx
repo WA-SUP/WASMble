@@ -5,7 +5,7 @@ export default function ContentBox({
 }) {
   return (
     <div
-      className={`${width} ${height} border border-slate-200/10 rounded-md bg-slate-100/10`}
+      className={`p-3 ${width} ${height} border border-slate-200/10 rounded-md bg-slate-100/10`}
     >
       {children}
     </div>
