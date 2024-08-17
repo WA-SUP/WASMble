@@ -8,7 +8,8 @@ describe("parseJscodeToAST", () => {
       },
     };
 
-    const result = parseJscodeToAST(request);
+    const { functionCode } = request.body;
+    const result = parseJscodeToAST(functionCode);
 
     expect(result).toHaveProperty("type", "File");
     expect(result).toHaveProperty("program");
@@ -22,7 +23,8 @@ describe("parseJscodeToAST", () => {
       },
     };
 
-    const result = parseJscodeToAST(request);
+    const { functionCode } = request.body;
+    const result = parseJscodeToAST(functionCode);
 
     expect(result).toHaveProperty("errorStackMessage");
   });

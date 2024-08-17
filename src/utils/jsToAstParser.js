@@ -1,8 +1,6 @@
 import * as parser from "@babel/parser";
 
-export default function parseJscodeToAST(request) {
-  const { functionCode } = request.body;
-
+export default function parseJscodeToAST(functionCode) {
   try {
     const ast = parser.parse(functionCode, {
       sourceType: "script",
