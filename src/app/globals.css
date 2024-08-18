@@ -7,6 +7,7 @@
   --color-purple-light: #646cff;
   --color-purple: #535bf2;
   --color-white-rgba: 255, 255, 255, 0.7;
+  --color-darkgray: #505050;
 }
 
 body {
@@ -20,4 +21,28 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.btn-purple {
+  @apply bg-[var(--color-purple)] text-white;
+}
+
+.btn-purple-light {
+  @apply bg-[var(--color-purple-light)] text-white;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  padding: 0.625rem;
+  margin: 0.625rem;
+  width: 0.625rem;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: theme("colors.mainScroll");
+  border-radius: 0.625rem;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: theme("colors.border");
+  border-radius: 0.625rem;
 }

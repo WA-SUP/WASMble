@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
-
 import Button from "@components/button/Button";
 import CodeEditor from "@components/editor/CodeEditor";
 
-export default function CodeEditorWrapper() {
+export default function CodeEditorWrapper({ setFunctionCode, onExecute }) {
   const [userWrittenCode, setUserWrittenCode] = useState("");
+
+  const handleClick = () => {
+    setFunctionCode(userWrittenCode);
+    onExecute();
+  };
 
   return (
     <>
@@ -14,7 +18,8 @@ export default function CodeEditorWrapper() {
       <Button
         text="실행"
         className="mt-4 px-3 py-2 w-full rounded-md bg-color-purple font-semibold hover:bg-color-purple-light transition-colors"
-      ></Button>
+        onClick={handleClick}
+      />
     </>
   );
 }
