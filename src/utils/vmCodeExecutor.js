@@ -9,7 +9,7 @@ export default async function executeVmCode(userFunctionCode) {
 
   const timeoutPromise = new Promise((_, reject) => {
     timeoutId = setTimeout(() => {
-      reject(new Error("시간 초과"));
+      reject({ message: "시간 초과" });
     }, timeoutLimit);
   });
 
@@ -20,7 +20,7 @@ export default async function executeVmCode(userFunctionCode) {
     return result;
   } catch (error) {
     return {
-      message: "JavaScript 함수 실행 실패",
+      errorMessage: "JavaScript 함수 실행 실패",
       errorStackMessage: error.message,
     };
   } finally {
