@@ -9,6 +9,8 @@ module.exports = {
       colors: {
         "color-purple-light": "var(--color-purple-light)",
         "color-purple": "var(--color-purple)",
+        mainScroll: "var(--color-darkgray)",
+        border: "var(--color-purple-light)",
       },
     },
   },
