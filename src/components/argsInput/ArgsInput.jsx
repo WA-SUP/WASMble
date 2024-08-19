@@ -12,7 +12,7 @@ export default function ArgsInput({ value, index, onRemove }) {
         readOnly
       />
       <Button
-        text="X"
+        text="&times;"
         className="bg-red-500 text-white px-2 py-1 rounded"
         onClick={() => onRemove(index)}
       />
