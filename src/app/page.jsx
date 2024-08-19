@@ -8,7 +8,6 @@ import Modal from "@components/modal/Modal";
 export default function Home() {
   const [functionCode, setFunctionCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalResult, setModalResult] = useState(null);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -18,11 +17,35 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  const handleModalSubmit = (functionArguments) => {
+  const handleModalSubmit = async (functionArguments) => {
     const functionName = functionCode.match(/function (\w+)/)[1];
     const functionCall = `${functionName}(${functionArguments.join(", ")})`;
 
-    setModalResult({ functionCode, functionArguments, functionCall });
+    const requestBody = {
+      functionCode,
+      functionArguments,
+      functionCall,
+    };
+
+    try {
+      const response = await fetch("/api/performance-comprison", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("결과:", result);
+      } else {
+        console.error("요청에 실패했습니다:", response.statusText);
+      }
+    } catch (error) {
+      console.error("요청 중 에러 발생:", error);
+    }
+
     handleCloseModal();
   };
 
@@ -38,9 +61,6 @@ export default function Home() {
         <ContentBox width="w-[49%]">
           <div className="flex justify-center items-center h-full">
             <h1 className="text-2xl font-bold"> 성능 비교 UI</h1>
-            {modalResult && (
-              <pre className="mt-4">{JSON.stringify(modalResult, null, 1)}</pre>
-            )}
           </div>
         </ContentBox>
         <Modal
