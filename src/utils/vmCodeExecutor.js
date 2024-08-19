@@ -1,6 +1,9 @@
 import ivm from "isolated-vm";
 
-export default async function executeVmCode(userFunctionCode) {
+export default async function executeVmCode(
+  userFunctionCode,
+  userFunctionCall,
+) {
   const isolatedVm = new ivm.Isolate({ memoryLimit: 128 });
   const context = await isolatedVm.createContext();
   const timeoutLimit = 5000;
@@ -14,13 +17,15 @@ export default async function executeVmCode(userFunctionCode) {
   });
 
   try {
-    const script = await isolatedVm.compileScript(userFunctionCode);
+    const script = await isolatedVm.compileScript(
+      userFunctionCode + userFunctionCall,
+    );
     const result = await Promise.race([script.run(context), timeoutPromise]);
 
     return result;
   } catch (error) {
     return {
-      message: "JavaScript 함수 실행 실패",
+      errorMessage: "JavaScript 함수 실행 실패",
       errorStackMessage: error.message,
     };
   } finally {
