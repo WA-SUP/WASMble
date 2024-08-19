@@ -14,7 +14,8 @@ const Modal = ({ isOpen, onClose, functionCode, onSubmit }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
     onSubmit(args);
     onClose();
   };
@@ -27,7 +28,7 @@ const Modal = ({ isOpen, onClose, functionCode, onSubmit }) => {
       onClick={onClose}
     >
       <div
-        className="bg-black flex flex-col justify-between w-3/6 h-3/6 p-10 border-indigo-500 rounded-lg relative"
+        className="bg-[var(--modal-background-color)] flex flex-col justify-between w-3/6 h-3/6 p-10 border-indigo-500 rounded-lg relative"
         onClick={(e) => e.stopPropagation()}
       >
         <Button
@@ -35,18 +36,21 @@ const Modal = ({ isOpen, onClose, functionCode, onSubmit }) => {
           className="absolute top-2 right-2 text-white bg-transparent"
           onClick={onClose}
         />
-        <div className="flex justify-between">
-          <h1>테스트 케이스 입력</h1>
-        </div>
-        <AddArgForm onAddArg={handleAddArg} />
-        <ArgsInputList args={args} setArgs={setArgs} />
-        <div className="flex justify-end">
-          <Button
-            text="확인"
-            className="btn-purple-light px-4 py-2 rounded"
-            onClick={handleSubmit}
-          />
-        </div>
+        <h1>테스트 케이스 입력</h1>
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex flex-col justify-between h-full"
+        >
+          <AddArgForm onAddArg={handleAddArg} />
+          <ArgsInputList args={args} setArgs={setArgs} />
+          <div className="flex justify-end">
+            <Button
+              text="확인"
+              className="btn-purple-light px-4 py-2 rounded"
+              type="submit"
+            />
+          </div>
+        </form>
       </div>
     </div>
   );

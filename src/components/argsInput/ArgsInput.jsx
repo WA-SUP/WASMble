@@ -8,7 +8,7 @@ export default function ArgsInput({ value, index, onRemove }) {
       <input
         type="text"
         value={value}
-        className="border p-2 mr-2 flex-grow text-black"
+        className="border-b p-2 mr-2 flex-grow bg-inherit text-white"
         readOnly
       />
       <Button
