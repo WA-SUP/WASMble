@@ -18,8 +18,11 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  const handleModalSubmit = (params) => {
-    setModalResult({ functionCode, params });
+  const handleModalSubmit = (functionArguments) => {
+    const functionName = functionCode.match(/function (\w+)/)[1];
+    const functionCall = `${functionName}(${functionArguments.join(", ")})`;
+
+    setModalResult({ functionCode, functionArguments, functionCall });
     handleCloseModal();
   };
 
@@ -36,18 +39,17 @@ export default function Home() {
           <div className="flex justify-center items-center h-full">
             <h1 className="text-2xl font-bold"> 성능 비교 UI</h1>
             {modalResult && (
-              <pre className="mt-4">{JSON.stringify(modalResult, null, 2)}</pre>
+              <pre className="mt-4">{JSON.stringify(modalResult, null, 1)}</pre>
             )}
           </div>
         </ContentBox>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          functionCode={functionCode}
+          onSubmit={handleModalSubmit}
+        />
       </section>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        functionCode={functionCode}
-        onSubmit={handleModalSubmit}
-      />
     </>
   );
 }
