@@ -27,14 +27,15 @@ export function assignFunctionTypes(
 
 function inferType(value) {
   if (Array.isArray(value)) {
-    const elementType =
-      typeof value[0] === "string" ? t.tsStringKeyword() : t.tsNumberKeyword();
-
-    return t.tsArrayType(elementType);
+    if (typeof value[0] === "string") {
+      return t.tsArrayType(t.tsStringKeyword());
+    } else if (typeof value[0] === "number") {
+      return t.tsTypeReference(t.identifier("Int32Array"));
+    }
   } else if (typeof value === "string") {
     return t.tsStringKeyword();
   } else if (typeof value === "number") {
-    return t.tsNumberKeyword();
+    return t.tsTypeReference(t.identifier("i32"));
   } else if (typeof value === "boolean") {
     return t.tsBooleanKeyword();
   }

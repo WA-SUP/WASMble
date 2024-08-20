@@ -21,7 +21,7 @@ describe("assignFunctionTypes", () => {
     );
     const { code } = generate(resultAst, {}, userFunction);
 
-    const expectCode = `function userCode(a: number, b: number, c: number): number {
+    const expectCode = `function userCode(a: i32, b: i32, c: i32): i32 {
   return a + b + c;
 }`;
 
@@ -35,7 +35,7 @@ describe("assignFunctionTypes", () => {
       }
     `;
     const userFunctionArguments = [[1, 2, 3]];
-    const userReturnValue = [[1, 2, 3]];
+    const userReturnValue = [1, 2, 3];
     const ast = parseJscodeToAST(userFunction);
 
     const resultAst = assignFunctionTypes(
@@ -45,7 +45,7 @@ describe("assignFunctionTypes", () => {
     );
     const { code } = generate(resultAst, {}, userFunction);
 
-    const expectCode = `function userCode(arr: number[]): number[] {
+    const expectCode = `function userCode(arr: Int32Array): Int32Array {
   return arr;
 }`;
 
@@ -69,7 +69,7 @@ describe("assignFunctionTypes", () => {
     );
     const { code } = generate(resultAst, {}, userFunction);
 
-    const expectCode = `function userCode(a: number, b: number[], c: string): number {
+    const expectCode = `function userCode(a: i32, b: Int32Array, c: string): i32 {
   return a;
 }`;
 
