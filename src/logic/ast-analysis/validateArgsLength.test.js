@@ -1,4 +1,4 @@
-import validateArgsLength from "@logic/performance-comparison/validateArgsLength";
+import validateArgsLength from "@/logic/ast-analysis/validateArgsLength";
 import parseJscodeToAST from "@/utils/jsToAstParser";
 
 describe("validateArgsLength", () => {
