@@ -24,6 +24,14 @@ body {
   }
 }
 
+.text-purple {
+  color: var(--color-purple);
+}
+
+.text-xxs {
+  font-size: 0.625rem;
+}
+
 .btn-purple {
   @apply bg-[var(--color-purple)] text-white;
 }
@@ -46,4 +54,9 @@ body {
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: theme("colors.border");
   border-radius: 0.625rem;
+}
+
+.monaco-scrollable-element > .scrollbar {
+  width: 0 !important;
+  height: 0 !important;
 }
