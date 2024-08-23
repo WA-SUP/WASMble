@@ -26,12 +26,12 @@ export default async function executeMeasurementInVm({
       return "getPerformanceResult({ jsFn, wasmFn, args })";
     });
 
-  const code = `const performanceResults = (async () => {
+  const scriptSource = `const performanceResults = (async () => {
     return await Promise.allSettled([${funcExecutionList.join(",")}]);
   })();`;
 
-  const script = new vm.Script(code);
-  const context = {
+  const scriptCode = new vm.Script(scriptSource);
+  const sandboxEnv = {
     getPerformanceResult,
     measurePerformanceByFunc,
     args,
@@ -39,8 +39,8 @@ export default async function executeMeasurementInVm({
     jsFn: jsFunc,
   };
 
-  vm.createContext(context);
-  script.runInContext(context);
+  const executionContext = vm.createContext(sandboxEnv);
+  scriptCode.runInContext(executionContext);
 
   return await context.performanceResults;
 }
