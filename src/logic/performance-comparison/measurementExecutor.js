@@ -1,17 +1,14 @@
 import vm from "vm";
 
 import { createWasmInstance } from "@utils/webAssemblyUtils";
-import { generateJsCode } from "@utils/vmUtils";
-import parseJscodeToAST from "@utils/jsToAstParser";
+import { generateJsCode } from "@utils/codeGenerator";
 
 import {
   getPerformanceResult,
   measurePerformanceByFunc,
 } from "@logic/performance-comparison/performanceAnalysis";
 
-import getIdentifierNameListByFunc from "@logic/ast-analysis/getIdentifierNameList";
-
-export default function executeMeasurementInVm({
+export default async function executeMeasurementInVm({
   javascriptCode,
   assemblyScriptCode,
   args,
@@ -19,18 +16,18 @@ export default function executeMeasurementInVm({
 }) {
   const ELEMENT_TO_FILL = 0;
 
-  const wasmInstance = createWasmInstance(assemblyScriptCode);
+  const wasmInstance = await createWasmInstance(assemblyScriptCode);
   const jsFunc = generateJsCode(javascriptCode);
-  const executeFuncName = javascriptCode.match(/function (\w+)/)[1];
+  const extractedJsFuncName = javascriptCode.match(/function (\w+)/)[1];
 
-  const execStatementList = new Array(repeatCount)
+  const funcExecutionList = new Array(repeatCount)
     .fill(ELEMENT_TO_FILL)
     .map((_) => {
       return "getPerformanceResult({ jsFn, wasmFn, args })";
     });
 
-  const code = `(async () => {
-    return await Promise.allSettled([${execStatementList.join(",")}]);
+  const code = `const performanceResults = (async () => {
+    return await Promise.allSettled([${funcExecutionList.join(",")}]);
   })();`;
 
   const script = new vm.Script(code);
@@ -38,9 +35,12 @@ export default function executeMeasurementInVm({
     getPerformanceResult,
     measurePerformanceByFunc,
     args,
-    wasmFn: wasmInstance[executeFuncName],
+    wasmFn: wasmInstance[extractedJsFuncName],
     jsFn: jsFunc,
   };
+
   vm.createContext(context);
   script.runInContext(context);
+
+  return await context.performanceResults;
 }
