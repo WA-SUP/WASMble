@@ -28,3 +28,14 @@ export async function getPerformanceResult({ jsFn, wasmFn, args }) {
       wasmPerformanceResult.value ?? wasmPerformanceResult.reason,
   };
 }
+
+export function calculateAverageExecutionTime(targetPerformanceResults) {
+  const totalExecutionTime = targetPerformanceResults.reduce((acc, cur) => {
+    const currentExecutionTime = cur?.executionTime ?? 0;
+    acc += currentExecutionTime;
+
+    return acc;
+  }, 0);
+
+  return totalExecutionTime / targetPerformanceResults.length;
+}
