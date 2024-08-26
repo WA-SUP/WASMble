@@ -17,18 +17,33 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
+  function parseArguments(functionArguments) {
+    return [...functionArguments].map((element) => {
+      try {
+        return JSON.parse(element);
+      } catch (error) {
+        return element;
+      }
+    });
+  }
+
   const handleModalSubmit = async (functionArguments) => {
     const functionName = functionCode.match(/function (\w+)/)[1];
     const functionCall = `${functionName}(${functionArguments.join(", ")})`;
+    const normalizedFunctionCode = functionCode.replace(/\n/g, "");
+    const parsedFunctionArguments = JSON.stringify(
+      parseArguments(functionArguments),
+    );
 
     const requestBody = {
-      functionCode,
-      functionArguments,
+      functionCode: normalizedFunctionCode,
+      functionArguments: parsedFunctionArguments,
       functionCall,
+      functionName,
     };
 
     try {
-      const response = await fetch("/api/performance-comprison", {
+      const response = await fetch("/api/performance-comparison", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
