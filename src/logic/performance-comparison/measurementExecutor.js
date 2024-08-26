@@ -28,7 +28,11 @@ export default async function executeMeasurementInVm({
 
   const scriptSource = `
     var performanceResults = (async () => {
-      return await Promise.allSettled([${funcExecutionList.join(",")}]);
+      const results = await Promise.allSettled([${funcExecutionList.join(",")}]);
+
+      return results.map((result) => {
+        return result.value ?? result.reason;
+      });
     })();
   `;
 
@@ -44,7 +48,7 @@ export default async function executeMeasurementInVm({
   const executionContext = vm.createContext(sandboxEnv);
   scriptCode.runInContext(executionContext);
 
-  const performanceResults = await context["performanceResults"];
+  const performanceResults = await executionContext["performanceResults"];
 
   const jsPerformanceResults = performanceResults.map((result) => {
     return result.jsPerformance;
@@ -64,6 +68,6 @@ export default async function executeMeasurementInVm({
   return {
     jsAverageExecutionTime,
     wasmAverageExecutionTime,
-    ...performanceResults,
+    performanceResults,
   };
 }
