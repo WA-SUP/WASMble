@@ -37,43 +37,47 @@ describe("calculateAverageExecutionTime", () => {
   const mockPerformanceResults = new Array(5).fill(0).map((_, index) => {
     return {
       cpuUsage: 0,
-      executionTime: null,
+      executionTime: 10,
     };
   });
+
+  const mockPerformanceRejectedResult = [
+    {
+      cpuUsage: 0,
+    },
+    {
+      cpuUsage: 0,
+      executionTime: null,
+    },
+    {
+      cpuUsage: 0,
+      executionTime: 10,
+    },
+    {
+      cpuUsage: 0,
+      executionTime: 10,
+    },
+    {
+      cpuUsage: 0,
+      executionTime: 10,
+    },
+  ];
 
   it("성능 측정 결과를 순회하며 평균 실행 시간를 반환해야합니다.", () => {
     expect(calculateAverageExecutionTime(mockPerformanceResults)).toEqual(
       expect.any(Number),
     );
 
-    expect(calculateAverageExecutionTime(mockPerformanceResults)).toBe(0);
+    expect(calculateAverageExecutionTime(mockPerformanceResults)).toBe(10);
   });
 
-  it("실행 시간이 존재하지 않을 경우 0으로 대체하여 결과값을 반환해야합니다.", () => {
+  it("측정에 실패한 결과가 존재할 경우 실한 결과를 제외한 평균 실행 시간를 반환해야합니다.", () => {
     expect(
-      calculateAverageExecutionTime([
-        {
-          cpuUsage: 0,
-          executionTime: null,
-        },
-        {
-          cpuUsage: 0,
-          executionTime: 1,
-        },
-      ]),
+      calculateAverageExecutionTime(mockPerformanceRejectedResult),
     ).toEqual(expect.any(Number));
 
-    expect(
-      calculateAverageExecutionTime([
-        {
-          cpuUsage: 0,
-          executionTime: null,
-        },
-        {
-          cpuUsage: 0,
-          executionTime: 1,
-        },
-      ]),
-    ).toBe(1 / 2);
+    expect(calculateAverageExecutionTime(mockPerformanceRejectedResult)).toBe(
+      10,
+    );
   });
 });

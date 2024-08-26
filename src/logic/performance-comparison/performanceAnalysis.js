@@ -30,12 +30,20 @@ export async function getPerformanceResult({ jsFn, wasmFn, args }) {
 }
 
 export function calculateAverageExecutionTime(targetPerformanceResults) {
-  const totalExecutionTime = targetPerformanceResults.reduce((acc, cur) => {
-    const currentExecutionTime = cur?.executionTime ?? 0;
+  const filteredFulfilledResults = targetPerformanceResults.filter((result) => {
+    return (
+      result.hasOwnProperty("executionTime") &&
+      result.executionTime !== null &&
+      result.executionTime !== undefined
+    );
+  });
+
+  const totalExecutionTime = filteredFulfilledResults.reduce((acc, cur) => {
+    const currentExecutionTime = cur.executionTime;
     acc += currentExecutionTime;
 
     return acc;
   }, 0);
 
-  return totalExecutionTime / targetPerformanceResults.length;
+  return totalExecutionTime / filteredFulfilledResults.length;
 }

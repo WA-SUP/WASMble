@@ -53,16 +53,17 @@ export default async function executeMeasurementInVm({
   const wasmPerformanceResults = performanceResults.map((result) => {
     return result.wasmPerformance;
   });
-  const jsAverageExecutionTimes =
+
+  const jsAverageExecutionTime =
     calculateAverageExecutionTime(jsPerformanceResults);
 
-  const wasmAverageExecutionTimes = calculateAverageExecutionTime(
+  const wasmAverageExecutionTime = calculateAverageExecutionTime(
     wasmPerformanceResults,
   );
 
   return {
-    jsAverageExecutionTimes,
-    wasmAverageExecutionTimes,
+    jsAverageExecutionTime,
+    wasmAverageExecutionTime,
     ...performanceResults,
   };
 }
