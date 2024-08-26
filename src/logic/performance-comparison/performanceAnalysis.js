@@ -1,4 +1,4 @@
-export function measurePerformanceByFunc(targetFunc, args) {
+export function measurePerformanceByFunc(targetFunc, args, type) {
   const startTime = performance.now();
   const startCpu = process.cpuUsage();
 
@@ -8,18 +8,42 @@ export function measurePerformanceByFunc(targetFunc, args) {
   const endTime = performance.now();
 
   return {
-    cpuUsage: endCpu,
-    runTime: endTime - startTime,
+    type,
+    cpuUsage: endCpu.user,
+    executionTime: endTime - startTime,
   };
 }
 
 export async function getPerformanceResult({ jsFn, wasmFn, args }) {
-  const resultList = await Promise.allSettled([
-    measurePerformance(jsFn, args),
-    measurePerformance(wasmFn, args),
-  ]);
+  const [jsPerformanceResult, wasmPerformanceResult] = await Promise.allSettled(
+    [
+      measurePerformanceByFunc(jsFn, args, "JS"),
+      measurePerformanceByFunc(wasmFn, args, "WASM"),
+    ],
+  );
 
-  const [jsPerformance, wasmPerformance] = resultList;
+  return {
+    jsPerformance: jsPerformanceResult.value ?? jsPerformanceResult.reason,
+    wasmPerformance:
+      wasmPerformanceResult.value ?? wasmPerformanceResult.reason,
+  };
+}
 
-  return { jsPerformance, wasmPerformance };
+export function calculateAverageExecutionTime(targetPerformanceResults) {
+  const filteredFulfilledResults = targetPerformanceResults.filter((result) => {
+    return (
+      result.hasOwnProperty("executionTime") &&
+      result.executionTime !== null &&
+      result.executionTime !== undefined
+    );
+  });
+
+  const totalExecutionTime = filteredFulfilledResults.reduce((acc, cur) => {
+    const currentExecutionTime = cur.executionTime;
+    acc += currentExecutionTime;
+
+    return acc;
+  }, 0);
+
+  return totalExecutionTime / filteredFulfilledResults.length;
 }
