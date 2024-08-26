@@ -48,8 +48,8 @@ export async function POST(request) {
     const wasmBuffer = await readFile(wasmFilePath);
 
     const result = await executeMeasurementInVm({
-      javascriptCode: functionCode,
       wasmBuffer,
+      javascriptCode: functionCode,
       extractedJsFuncName: functionName,
       args: parsedFunctionArguments,
     });
@@ -58,8 +58,6 @@ export async function POST(request) {
 
     return NextResponse.json({ result, asCode }, { status: 200 });
   } catch (error) {
-    console.error(error);
-
     buildAndCleanup.deleteTempDirectory(tempDirectory);
 
     return NextResponse.json(

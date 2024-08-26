@@ -36,10 +36,10 @@ export default function Home() {
     );
 
     const requestBody = {
-      functionCode: normalizedFunctionCode,
-      functionArguments: parsedFunctionArguments,
       functionCall,
       functionName,
+      functionCode: normalizedFunctionCode,
+      functionArguments: parsedFunctionArguments,
     };
 
     try {

@@ -8,7 +8,6 @@ export async function createAsModule(code, UUID, directory) {
 
   try {
     await writeFile(asFilePath, userCode);
-    console.log(`파일 생성: ${asFilePath}`);
 
     return asFilePath;
   } catch (error) {
@@ -37,7 +36,6 @@ export async function createWASM(asFilePath, UUID, directory) {
 export async function deleteTempDirectory(tempDirectory) {
   try {
     tempDirectory.removeCallback();
-    console.log("tempDirectory 삭제 완료");
   } catch (error) {
     console.error("tempDirectory 삭제 완료: ", error);
   }
