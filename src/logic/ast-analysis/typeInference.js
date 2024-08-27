@@ -1,24 +1,36 @@
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
 
-export function assignFunctionTypes(
+export default function assignFunctionTypes(
   ast,
-  userFunctionArguments,
-  userReturnValue,
+  functionArguments,
+  userCodeResult,
 ) {
   const resultAst = ast;
 
-  traverse(resultAst, {
+  traverse.default(resultAst, {
     FunctionDeclaration(path) {
       path.node.params.forEach((param, index) => {
         if (t.isIdentifier(param)) {
-          param.typeAnnotation = t.tsTypeAnnotation(
-            inferType(userFunctionArguments[index]),
-          );
+          const inferredType = inferType(functionArguments[index]);
+          if (inferredType) {
+            param.typeAnnotation = t.tsTypeAnnotation(inferredType);
+          }
         }
       });
 
-      path.node.returnType = t.tsTypeAnnotation(inferType(userReturnValue));
+      path.node.returnType = t.tsTypeAnnotation(inferType(userCodeResult));
+    },
+
+    VariableDeclarator(path) {
+      const { id, init } = path.node;
+
+      if (t.isIdentifier(id)) {
+        const inferredType = inferType(init.value);
+        if (inferredType) {
+          id.typeAnnotation = t.tsTypeAnnotation(inferredType);
+        }
+      }
     },
   });
 
@@ -39,6 +51,4 @@ function inferType(value) {
   } else if (typeof value === "boolean") {
     return t.tsBooleanKeyword();
   }
-
-  return t.tsAnyKeyword();
 }

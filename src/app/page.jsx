@@ -21,20 +21,33 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
+  function parseArguments(functionArguments) {
+    return [...functionArguments].map((element) => {
+      try {
+        return JSON.parse(element);
+      } catch (error) {
+        return element;
+      }
+    });
+  }
+
   const handleModalSubmit = async (functionArguments) => {
     const functionName = functionCode.match(/function (\w+)/)[1];
     const functionCall = `${functionName}(${functionArguments.join(", ")})`;
+    const normalizedFunctionCode = functionCode.replace(/\n/g, "");
+    const parsedFunctionArguments = JSON.stringify(
+      parseArguments(functionArguments),
+    );
 
     const requestBody = {
-      functionCode,
-      functionArguments,
       functionCall,
+      functionName,
+      functionCode: normalizedFunctionCode,
+      functionArguments: parsedFunctionArguments,
     };
 
     try {
-      setViewState("loading");
-
-      const response = await fetch("/api/performance-comparison", {
+      const response = await fetch("/api/performance-comprison", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
