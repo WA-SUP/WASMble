@@ -1,6 +1,7 @@
 import { writeFile } from "fs/promises";
 import { exec } from "child_process";
 import { promisify } from "util";
+import ApiError from "@logic/api-error/performanceComparison";
 
 export async function createAsModule(code, UUID, directory) {
   const userCode = `export ${code.trim()}`;
@@ -11,7 +12,7 @@ export async function createAsModule(code, UUID, directory) {
 
     return asFilePath;
   } catch (error) {
-    console.error("as모듈 생성 에러: ", error);
+    throw new ApiError("AS모듈 생성 에러", 500, error.message);
   }
 }
 
@@ -21,15 +22,11 @@ export async function createWASM(asFilePath, UUID, directory) {
   const command = `npx asc ${asFilePath} --outFile ${wasmFilePath} --optimize`;
 
   try {
-    const { stderr } = await execPromisify(command);
-
-    if (stderr) {
-      console.error("wasm 빌드 stderr: ", stderr);
-    }
+    await execPromisify(command);
 
     return wasmFilePath;
   } catch (error) {
-    console.error("WASM 빌드 에러: ", error);
+    throw new ApiError("WASM 생성 에러", 500, error.message);
   }
 }
 
@@ -37,6 +34,6 @@ export async function deleteTempDirectory(tempDirectory) {
   try {
     tempDirectory.removeCallback();
   } catch (error) {
-    console.error("tempDirectory 삭제 완료: ", error);
+    throw new ApiError("tempDirectory 삭제 에러", 500, error.message);
   }
 }
