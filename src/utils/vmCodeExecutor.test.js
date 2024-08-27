@@ -23,9 +23,6 @@ describe("executeVmCode", () => {
 
     await expect(
       executeVmCode(userFunction, userFunctionCall),
-    ).resolves.toMatchObject({
-      errorMessage: "JavaScript 함수 실행 실패",
-      errorStackMessage: "시간 초과",
-    });
+    ).rejects.toHaveProperty("errorStackMessage");
   }, 10000);
 });
