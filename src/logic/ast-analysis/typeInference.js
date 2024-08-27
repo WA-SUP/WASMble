@@ -1,6 +1,8 @@
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
+
 import ApiError from "@logic/api-error/performanceComparison";
+import { ERROR_CASE } from "@/constants/apiErrorType";
 
 export default function assignFunctionTypes(
   ast,
@@ -35,7 +37,6 @@ export default function assignFunctionTypes(
         if (t.isIdentifier(id)) {
           t.isArrayExpression(init);
           const inferredType = inferType(init.value);
-          console.log(inferredType);
           if (inferredType) {
             id.typeAnnotation = t.tsTypeAnnotation(inferredType);
           }
@@ -43,11 +44,7 @@ export default function assignFunctionTypes(
       },
     });
   } catch {
-    throw new ApiError(
-      "타입 추론 에러",
-      200,
-      "배열, 객체 타입은 지원하지 않습니다.",
-    );
+    throw new ApiError(ERROR_CASE.TYPE_INFERENCE_ERROR);
   }
 
   return resultAst;

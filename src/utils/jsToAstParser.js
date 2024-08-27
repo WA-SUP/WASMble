@@ -1,5 +1,7 @@
-import ApiError from "@logic/api-error/performanceComparison";
 import * as parser from "@babel/parser";
+
+import ApiError from "@logic/api-error/performanceComparison";
+import { ERROR_CASE } from "@/constants/apiErrorType";
 
 export default function parseJscodeToAST(functionCode) {
   try {
@@ -8,7 +10,7 @@ export default function parseJscodeToAST(functionCode) {
     });
 
     return ast;
-  } catch (error) {
-    throw new ApiError("ast 파싱 에러", 400, error.message);
+  } catch {
+    throw new ApiError(ERROR_CASE.AST_PARSING_ERROR);
   }
 }

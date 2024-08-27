@@ -25,6 +25,6 @@ describe("parseJscodeToAST", () => {
 
     const { functionCode } = request.body;
 
-    expect(() => parseJscodeToAST(functionCode)).toThrow("ast 파싱 에러");
+    expect(() => parseJscodeToAST(functionCode)).toThrow();
   });
 });

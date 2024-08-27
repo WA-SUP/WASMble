@@ -1,6 +1,7 @@
 import ivm from "isolated-vm";
 
 import ApiError from "@logic/api-error/performanceComparison";
+import { ERROR_CASE } from "@/constants/apiErrorType";
 
 export default async function executeVmCode(
   userFunctionCode,
@@ -26,7 +27,7 @@ export default async function executeVmCode(
 
     return result;
   } catch (error) {
-    throw new ApiError("JavaScript 함수 실행 실패", 200, error.message);
+    throw new ApiError(ERROR_CASE.EXECUTION_FAULT, error.message);
   } finally {
     clearTimeout(timeoutId);
     context.release();

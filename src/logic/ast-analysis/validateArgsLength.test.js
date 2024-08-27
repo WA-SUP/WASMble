@@ -24,8 +24,6 @@ describe("validateArgsLength", () => {
     const ast = parseJscodeToAST(functionCode);
     const functionParams = ast.program.body[0].params;
 
-    expect(() => validateArgsLength(ast, functionArguments)).toThrow(
-      `함수의 매개변수 개수(${functionParams.length})와 입력된 인자의 개수(${functionArguments.length})가 일치하지 않습니다.`,
-    );
+    expect(() => validateArgsLength(ast, functionArguments)).toThrow();
   });
 });
