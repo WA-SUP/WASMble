@@ -1,3 +1,4 @@
+import ApiError from "@logic/api-error/performanceComparison";
 import * as parser from "@babel/parser";
 
 export default function parseJscodeToAST(functionCode) {
@@ -8,9 +9,6 @@ export default function parseJscodeToAST(functionCode) {
 
     return ast;
   } catch (error) {
-    return {
-      message: "지원하지 않는 변수의 타입입니다.",
-      errorStackMessage: error.message,
-    };
+    throw new ApiError("ast 파싱 에러", 400, error.message);
   }
 }
