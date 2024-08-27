@@ -11,6 +11,7 @@ import validateArgsLength from "@logic/ast-analysis/validateArgsLength";
 import assignFunctionTypes from "@logic/ast-analysis/typeInference";
 import * as buildAndCleanup from "@logic/file-operations/buildAndCleanup";
 import executeMeasurementInVm from "@logic/performance-comparison/measurementExecutor";
+import ApiError from "@logic/api-error/performanceComparison";
 
 export async function POST(request) {
   const UUID = crypto.randomUUID();
@@ -33,6 +34,8 @@ export async function POST(request) {
       userCodeResult,
     );
     const { code: asCode } = generate.default(asAst, {}, functionCode);
+
+    console.log(asCode);
 
     const asFilePath = await buildAndCleanup.createAsModule(
       asCode,
@@ -60,9 +63,15 @@ export async function POST(request) {
   } catch (error) {
     buildAndCleanup.deleteTempDirectory(tempDirectory);
 
-    return NextResponse.json(
-      { errorMessage: "올바르지 않은 요청입니다." },
-      { status: 400 },
-    );
+    if (error instanceof ApiError) {
+      const { message, statusCode, errorStackMessage } = error;
+
+      return NextResponse.json(
+        { message, errorStackMessage },
+        { status: statusCode },
+      );
+    } else {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
   }
 }
