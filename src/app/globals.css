@@ -9,6 +9,10 @@
   --color-purple: #535bf2;
   --color-white-rgba: 255, 255, 255, 0.7;
   --color-darkgray: #505050;
+  --color-notice-border: rgba(217, 119, 6, 0.8);
+  --color-notice: rgba(217, 119, 6, 0.3);
+  --color-slower: rgba(57, 30, 26, 1);
+  --color-faster: rgba(35, 44, 11, 1);
 }
 
 body {
@@ -47,16 +51,23 @@ body {
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: theme("colors.mainScroll");
+  background: var(--color-darkgray);
   border-radius: 0.625rem;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: theme("colors.border");
+  background-color: var(--color-purple-light);
   border-radius: 0.625rem;
 }
 
 .monaco-scrollable-element > .scrollbar {
   width: 0 !important;
   height: 0 !important;
+}
+
+.border-notice-border {
+  border-color: var(--color-notice-border);
+}
+.bg-color-notice {
+  background-color: var(--color-notice);
 }
