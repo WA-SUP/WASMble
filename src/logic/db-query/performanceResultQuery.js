@@ -20,7 +20,7 @@ export async function createPerformanceReport({
   return id;
 }
 
-export async function findPerformanceReport(id) {
+export async function findPerformanceReportById(id) {
   return await prisma.performanceReport.findUnique({
     where: {
       id,
