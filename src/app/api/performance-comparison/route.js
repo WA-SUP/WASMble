@@ -12,7 +12,7 @@ import assignFunctionTypes from "@logic/ast-analysis/typeInference";
 import * as moduleBuild from "@logic/file-operations/moduleBuild";
 import executeMeasurementInVm from "@logic/performance-comparison/measurementExecutor";
 import ApiError from "@logic/api-error/performanceComparison";
-import { createPerformanceReportById } from "@logic/db-query/performanceResultQuery";
+import { createPerformanceReport } from "@logic/db-query/performanceResultQuery";
 
 export async function POST(request) {
   const UUID = crypto.randomUUID();
@@ -56,7 +56,7 @@ export async function POST(request) {
       args: parsedFunctionArguments,
     });
 
-    const performanceReportId = await createPerformanceReportById({
+    const performanceReportId = await createPerformanceReport({
       measurementResults,
       transpiledAsCode: asCode,
       jsCode: functionCode,
