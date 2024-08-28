@@ -4,9 +4,8 @@ import { createWasmInstance } from "@utils/webAssemblyUtils";
 import { generateJsCode } from "@utils/codeGenerator";
 
 import {
-  calculateAverageExecutionTime,
-  getPerformanceResult,
-  measurePerformanceByFunc,
+  getPerformanceResultsByFunc,
+  measurePerformance,
 } from "@logic/performance-comparison/performanceAnalysis";
 
 export default async function executeMeasurementInVm({
@@ -14,60 +13,31 @@ export default async function executeMeasurementInVm({
   wasmBuffer,
   extractedJsFuncName,
   args,
-  repeatCount = 1,
 }) {
-  const ELEMENT_TO_FILL = 0;
-
   const wasmInstance = await createWasmInstance(wasmBuffer);
   const jsFunc = generateJsCode(javascriptCode, extractedJsFuncName);
-  const funcExecutionList = new Array(repeatCount)
-    .fill(ELEMENT_TO_FILL)
-    .map((_) => {
-      return "getPerformanceResult({ jsFn, wasmFn, args })";
-    });
 
   const scriptSource = `
-    var performanceResults = (async () => {
-      const results = await Promise.allSettled([${funcExecutionList.join(",")}]);
-
-      return results.map((result) => {
-        return result.value ?? result.reason;
-      });
+    var operationTimesPerSecond = (async () => {
+      return await getPerformanceResultsByFunc({wasmFn, jsFn, args});
     })();
   `;
 
   const scriptCode = new vm.Script(scriptSource);
   const sandboxEnv = {
-    getPerformanceResult,
-    measurePerformanceByFunc,
+    getPerformanceResultsByFunc,
+    measurePerformance,
     args,
     wasmFn: wasmInstance[extractedJsFuncName],
     jsFn: jsFunc,
   };
 
-  const executionContext = vm.createContext(sandboxEnv);
+  let executionContext = vm.createContext(sandboxEnv);
   scriptCode.runInContext(executionContext);
 
-  const performanceResults = await executionContext["performanceResults"];
+  const { operationTimesPerSecond } = executionContext;
 
-  const jsPerformanceResults = performanceResults.map((result) => {
-    return result.jsPerformance;
-  });
+  executionContext = null;
 
-  const wasmPerformanceResults = performanceResults.map((result) => {
-    return result.wasmPerformance;
-  });
-
-  const jsAverageExecutionTime =
-    calculateAverageExecutionTime(jsPerformanceResults);
-
-  const wasmAverageExecutionTime = calculateAverageExecutionTime(
-    wasmPerformanceResults,
-  );
-
-  return {
-    jsAverageExecutionTime,
-    wasmAverageExecutionTime,
-    performanceResults,
-  };
+  return await operationTimesPerSecond;
 }
