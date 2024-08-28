@@ -9,8 +9,9 @@ import executeUserCode from "@logic/performance-comparison/userCodeExecutor";
 import parseJscodeToAST from "@utils/jsToAstParser";
 import validateArgsLength from "@logic/ast-analysis/validateArgsLength";
 import assignFunctionTypes from "@logic/ast-analysis/typeInference";
-import * as buildAndCleanup from "@logic/file-operations/buildAndCleanup";
+import * as moduleBuild from "@logic/file-operations/moduleBuild";
 import executeMeasurementInVm from "@logic/performance-comparison/measurementExecutor";
+import ApiError from "@logic/api-error/performanceComparison";
 
 export async function POST(request) {
   const UUID = crypto.randomUUID();
@@ -34,12 +35,12 @@ export async function POST(request) {
     );
     const { code: asCode } = generate.default(asAst, {}, functionCode);
 
-    const asFilePath = await buildAndCleanup.createAsModule(
+    const asFilePath = await moduleBuild.createAsModule(
       asCode,
       UUID,
       tempDirectory,
     );
-    const wasmFilePath = await buildAndCleanup.createWASM(
+    const wasmFilePath = await moduleBuild.createWASM(
       asFilePath,
       UUID,
       tempDirectory,
@@ -54,15 +55,20 @@ export async function POST(request) {
       args: parsedFunctionArguments,
     });
 
-    buildAndCleanup.deleteTempDirectory(tempDirectory);
+    tempDirectory.removeCallback();
 
     return NextResponse.json({ result, asCode }, { status: 200 });
   } catch (error) {
-    buildAndCleanup.deleteTempDirectory(tempDirectory);
+    tempDirectory.removeCallback();
 
-    return NextResponse.json(
-      { errorMessage: "올바르지 않은 요청입니다." },
-      { status: 400 },
-    );
+    const isApiError = error instanceof ApiError;
+
+    if (!isApiError) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+
+    const { message, status, errorStackMessage } = error;
+
+    return NextResponse.json({ message, errorStackMessage }, { status });
   }
 }

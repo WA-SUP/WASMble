@@ -29,37 +29,36 @@ describe("/api/performance-comparison", () => {
     method: "POST",
   });
 
-  it("함수 이외의 타입을 코드 에디터에 입력한 경우 상태코드 400을 반환해야 한다.", async () => {
-    req.body = {
-      functionCode: "const a = 1",
-      functionArguments: ["a", "b", "c"],
-      functionCall: `add("a", "b", "c")`,
-    };
+  it("매개변수가 객체 또는 배열인 경우 타입 추론 에러와 상태코드 200을 반환해야 한다.", async () => {
+    req.json = async () => ({
+      functionCode: "function userCode(a) { return a }",
+      functionArguments: "[[1, 2, 3]]",
+      functionCall: `userCode([1, 2, 3])`,
+      functionName: "userCode",
+    });
 
     const response = await POST(req);
 
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({
-      errorMessage: "올바르지 않은 요청입니다.",
-    });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toHaveProperty("errorStackMessage");
   });
 
-  it("올바르지 않은 매개변수를 입력한 경우 상태코드 400을 반환해야 한다.", async () => {
-    req.body = {
+  it("함수 로직 내부에 객체 또는 배열이 존재하는 경우 타입 추론 에러와 상태코드 200을 반환해야 한다.", async () => {
+    req.json = async () => ({
       functionCode: `
         function userCode(a, b) {
+          const arr = [1, 2, 3]
           return a + b;
         }
       `,
-      functionArguments: undefined,
+      functionArguments: "[1, 2]",
       functionCall: "userCode(1, 2)",
-    };
+      functionName: "userCode",
+    });
 
     const response = await POST(req);
 
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({
-      errorMessage: "올바르지 않은 요청입니다.",
-    });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toHaveProperty("errorStackMessage");
   });
 });
