@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import CodeEditorWrapper from "@components/editor/CodeEditorWrapper";
 import ContentBox from "@components/common/ContentBox";
 import Modal from "@components/modal/Modal";
@@ -47,7 +48,9 @@ export default function Home() {
     };
 
     try {
-      const response = await fetch("/api/performance-comprison", {
+      setViewState("loading");
+
+      const response = await fetch("/api/performance-comparison", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,14 +88,14 @@ export default function Home() {
   }
 
   return (
-    <section className="flex justify-between items-center flex-grow p-6">
-      <ContentBox width="w-[49%]">
+    <section className="flex flex-col lg:font-2 lg:flex-row justify-between items-center flex-grow gap-4 p-6">
+      <ContentBox width="w-4/5 xl:w-[33%]">
         <CodeEditorWrapper
           onExecute={handleOpenModal}
           setFunctionCode={setFunctionCode}
         />
       </ContentBox>
-      <ContentBox width="w-[49%]">
+      <ContentBox width="w-4/5 xl:w-[66%]">
         <div className="flex justify-center items-center h-full">
           {renderContent()}
         </div>
