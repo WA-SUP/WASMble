@@ -1,21 +1,26 @@
 "use client";
 
 import { useState } from "react";
+
 import CodeEditorWrapper from "@components/editor/CodeEditorWrapper";
 import ContentBox from "@components/common/ContentBox";
 import Modal from "@components/modal/Modal";
+import Guide from "@components/guide/Guide";
+import Loading from "@components/loading/Loading";
+import Report from "@components/report/Report";
 
 export default function Home() {
   const [functionCode, setFunctionCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewState, setViewState] = useState("guide");
 
-  const handleOpenModal = () => {
+  function handleOpenModal() {
     setIsModalOpen(true);
-  };
+  }
 
-  const handleCloseModal = () => {
+  function handleCloseModal() {
     setIsModalOpen(false);
-  };
+  }
 
   function parseArguments(functionArguments) {
     return [...functionArguments].map((element) => {
@@ -43,6 +48,8 @@ export default function Home() {
     };
 
     try {
+      setViewState("loading");
+
       const response = await fetch("/api/performance-comparison", {
         method: "POST",
         headers: {
@@ -53,38 +60,51 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("결과:", result);
+
+        setViewState("report");
       } else {
         console.error("요청에 실패했습니다:", response.statusText);
+        setViewState("guide");
       }
     } catch (error) {
       console.error("요청 중 에러 발생:", error);
+      setViewState("guide");
     }
 
     handleCloseModal();
   };
 
+  function renderContent() {
+    switch (viewState) {
+      case "loading":
+        return <Loading />;
+      case "report":
+        return <Report />;
+      case "guide":
+      default:
+        return <Guide />;
+    }
+  }
+
   return (
-    <>
-      <section className="flex justify-between items-center flex-grow p-6">
-        <ContentBox width="w-[49%]">
-          <CodeEditorWrapper
-            onExecute={handleOpenModal}
-            setFunctionCode={setFunctionCode}
-          />
-        </ContentBox>
-        <ContentBox width="w-[49%]">
-          <div className="flex justify-center items-center h-full">
-            <h1 className="text-2xl font-bold"> 성능 비교 UI</h1>
-          </div>
-        </ContentBox>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          functionCode={functionCode}
-          onSubmit={handleModalSubmit}
+    <section className="flex flex-col lg:font-2 lg:flex-row justify-between items-center flex-grow gap-4 p-6">
+      <ContentBox width="w-4/5 xl:w-[33%]">
+        <CodeEditorWrapper
+          onExecute={handleOpenModal}
+          setFunctionCode={setFunctionCode}
         />
-      </section>
-    </>
+      </ContentBox>
+      <ContentBox width="w-4/5 xl:w-[66%]">
+        <div className="flex justify-center items-center h-full">
+          {renderContent()}
+        </div>
+      </ContentBox>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        functionCode={functionCode}
+        onSubmit={handleModalSubmit}
+      />
+    </section>
   );
 }

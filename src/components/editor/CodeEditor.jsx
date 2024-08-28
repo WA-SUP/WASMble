@@ -24,6 +24,12 @@ export default function CodeEditor({ onCodeChange }) {
       onMount={handleEditorMount}
       onChange={handleEditorChange}
       defaultValue={CODE_EDITOR_DEFAULT_VALUE}
+      options={{
+        minimap: {
+          enabled: false,
+        },
+        overviewRulerLanes: 0,
+      }}
     />
   );
 }

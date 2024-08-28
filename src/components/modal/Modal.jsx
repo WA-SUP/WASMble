@@ -45,7 +45,7 @@ const Modal = ({ isOpen, onClose, functionCode, onSubmit }) => {
           <ArgsInputList args={args} setArgs={setArgs} />
           <div className="flex justify-end">
             <Button
-              text="확인"
+              text="실행"
               className="btn-purple-light px-4 py-2 rounded"
               type="submit"
             />
