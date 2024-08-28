@@ -1,11 +1,13 @@
 import executeVmCode from "@utils/vmCodeExecutor";
+import ApiError from "@logic/api-error/performanceComparison";
+import { ERROR_CASE } from "@/constants/apiErrorType";
 
 export default async function executeUserCode(functionCode, functionArguments) {
-  const userResult = await executeVmCode(functionCode, functionArguments);
-
   if (!functionCode || !functionArguments) {
-    return { errorMessage: "올바르지 않은 요청입니다." };
+    throw new ApiError(ERROR_CASE.MISSING_REQUEST);
   }
+
+  const userResult = await executeVmCode(functionCode, functionArguments);
 
   return userResult;
 }

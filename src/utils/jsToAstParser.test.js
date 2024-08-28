@@ -24,8 +24,7 @@ describe("parseJscodeToAST", () => {
     };
 
     const { functionCode } = request.body;
-    const result = parseJscodeToAST(functionCode);
 
-    expect(result).toHaveProperty("errorStackMessage");
+    expect(() => parseJscodeToAST(functionCode)).toThrow();
   });
 });

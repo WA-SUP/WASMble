@@ -1,3 +1,6 @@
+import ApiError from "@logic/api-error/performanceComparison";
+import { ERROR_CASE } from "@/constants/apiErrorType";
+
 export default function validateArgsLength(ast, functionArguments) {
   try {
     const functionDeclaration = ast.program.body.find(
@@ -9,9 +12,7 @@ export default function validateArgsLength(ast, functionArguments) {
     );
 
     if (functionParams.length !== functionArguments.length) {
-      throw new Error(
-        `함수의 매개변수 개수(${functionParams.length})와 입력된 인자의 개수(${functionArguments.length})가 일치하지 않습니다.`,
-      );
+      throw new ApiError(ERROR_CASE.INVALID_ARGUMENTS_COUNT);
     }
 
     return true;
