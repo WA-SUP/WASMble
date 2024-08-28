@@ -1,49 +1,28 @@
-export function measurePerformanceByFunc(targetFunc, args, type) {
-  const startTime = performance.now();
-  const startCpu = process.cpuUsage();
+import { MODULE_TYPE_TEXT } from "@constants/constant";
 
-  targetFunc(...args);
+export function measurePerformance(targetFunc, args, type, sec = 1) {
+  const duration = sec * 1000;
+  const startTimestamp = performance.now();
+  let operationTimes = 0;
 
-  const endCpu = process.cpuUsage(startCpu);
-  const endTime = performance.now();
+  while (performance.now() - startTimestamp < duration) {
+    targetFunc(...args);
+    operationTimes++;
+  }
 
   return {
     type,
-    cpuUsage: endCpu.user,
-    executionTime: endTime - startTime,
+    operationTimes,
   };
 }
 
-export async function getPerformanceResult({ jsFn, wasmFn, args }) {
-  const [jsPerformanceResult, wasmPerformanceResult] = await Promise.allSettled(
-    [
-      measurePerformanceByFunc(jsFn, args, "JS"),
-      measurePerformanceByFunc(wasmFn, args, "WASM"),
-    ],
-  );
+export async function getPerformanceResultsByFunc({ jsFn, wasmFn, args, sec }) {
+  const performanceResult = await Promise.allSettled([
+    measurePerformance(jsFn, args, MODULE_TYPE_TEXT.JAVASCRIPT, sec),
+    measurePerformance(wasmFn, args, MODULE_TYPE_TEXT.WEB_ASSEMBLY, sec),
+  ]);
 
-  return {
-    jsPerformance: jsPerformanceResult.value ?? jsPerformanceResult.reason,
-    wasmPerformance:
-      wasmPerformanceResult.value ?? wasmPerformanceResult.reason,
-  };
-}
-
-export function calculateAverageExecutionTime(targetPerformanceResults) {
-  const filteredFulfilledResults = targetPerformanceResults.filter((result) => {
-    return (
-      result.hasOwnProperty("executionTime") &&
-      result.executionTime !== null &&
-      result.executionTime !== undefined
-    );
+  return performanceResult.map((result) => {
+    return result.value ?? result.reason;
   });
-
-  const totalExecutionTime = filteredFulfilledResults.reduce((acc, cur) => {
-    const currentExecutionTime = cur.executionTime;
-    acc += currentExecutionTime;
-
-    return acc;
-  }, 0);
-
-  return totalExecutionTime / filteredFulfilledResults.length;
 }

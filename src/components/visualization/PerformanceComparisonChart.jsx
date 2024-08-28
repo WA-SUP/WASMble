@@ -10,10 +10,10 @@ export default function PerformanceComparisonChart({ data }) {
   const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-    const labels = data.operationTimesPerSecond.map((item) =>
+    const labels = data.measurementResults.map((item) =>
       item.type.toUpperCase(),
     );
-    const operationTimes = data.operationTimesPerSecond.map(
+    const operationTimes = data.measurementResults.map(
       (item) => item.operationTimes,
     );
     const purpleColor = "rgba(83, 91, 242, 1)";
