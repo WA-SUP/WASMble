@@ -3,7 +3,11 @@ import DiffEditor from "@components/editor/DiffEditor";
 import SpeedReport from "@/components/visualization/SpeedReport";
 import PerformanceComparisonChart from "@/components/visualization/PerformanceComparisonChart";
 
-import { guideMockData } from "@/constants/constant";
+import {
+  GUIDE_MOCK_DATA,
+  GUIDE_DIFF_EDITOR_JS_VLAUE,
+  GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE,
+} from "@/constants/constant";
 
 export default function Guide() {
   return (
@@ -31,21 +35,24 @@ export default function Guide() {
         </ContentBox>
       </div>
       <ContentBox custom="flex flex-col justify-around items-center gap-2">
-        <DiffEditor />
+        <DiffEditor
+          originalCode={GUIDE_DIFF_EDITOR_JS_VLAUE}
+          modifiedCode={GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE}
+        />
         <div className="flex flex-row justify-around w-full h-full pt-3">
           <ContentBox
             width="w-[64%]"
             height="inherit"
             custom="flex flex-col justify-center"
           >
-            <PerformanceComparisonChart data={guideMockData} />
+            <PerformanceComparisonChart data={GUIDE_MOCK_DATA} />
           </ContentBox>
           <ContentBox
             width="w-[32%]"
             height="inherit"
             custom="flex flex-col justify-center"
           >
-            <SpeedReport data={guideMockData} />
+            <SpeedReport data={GUIDE_MOCK_DATA} />
           </ContentBox>
         </div>
       </ContentBox>

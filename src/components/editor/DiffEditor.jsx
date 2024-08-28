@@ -1,17 +1,7 @@
 import React from "react";
 import { DiffEditor } from "@monaco-editor/react";
 
-function MyDiffEditor() {
-  const originalCode = `
-  function add(a, b) {
-    return a + b;
-  }`;
-
-  const modifiedCode = `
-  function add(a: i32, b: i32): i32 {
-    return a + b;
-  }`;
-
+export default function MyDiffEditor({ originalCode, modifiedCode }) {
   return (
     <DiffEditor
       height="6.9rem"
@@ -27,5 +17,3 @@ function MyDiffEditor() {
     />
   );
 }
-
-export default MyDiffEditor;

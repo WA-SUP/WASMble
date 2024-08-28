@@ -14,13 +14,13 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewState, setViewState] = useState("guide");
 
-  const handleOpenModal = () => {
+  function handleOpenModal() {
     setIsModalOpen(true);
-  };
+  }
 
-  const handleCloseModal = () => {
+  function handleCloseModal() {
     setIsModalOpen(false);
-  };
+  }
 
   function parseArguments(functionArguments) {
     return [...functionArguments].map((element) => {
@@ -60,7 +60,6 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("결과:", result);
 
         setViewState("report");
       } else {

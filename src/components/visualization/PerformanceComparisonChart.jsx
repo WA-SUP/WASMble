@@ -79,19 +79,19 @@ export default function PerformanceComparisonChart({ data }) {
       options: options,
     });
 
-    function handleResize() {
+    function handleChartResize() {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.resize();
       }
     }
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleChartResize);
 
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleChartResize);
     };
   }, [data]);
 
