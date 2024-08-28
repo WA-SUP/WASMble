@@ -12,6 +12,7 @@ import assignFunctionTypes from "@logic/ast-analysis/typeInference";
 import * as moduleBuild from "@logic/file-operations/moduleBuild";
 import executeMeasurementInVm from "@logic/performance-comparison/measurementExecutor";
 import ApiError from "@logic/api-error/performanceComparison";
+import { createPerformanceReport } from "@logic/db-query/performanceResultQuery";
 
 export async function POST(request) {
   const UUID = crypto.randomUUID();
@@ -48,23 +49,36 @@ export async function POST(request) {
 
     const wasmBuffer = await readFile(wasmFilePath);
 
-    const result = await executeMeasurementInVm({
+    const measurementResults = await executeMeasurementInVm({
       wasmBuffer,
       javascriptCode: functionCode,
       extractedJsFuncName: functionName,
       args: parsedFunctionArguments,
     });
 
+    const performanceReportId = await createPerformanceReport({
+      measurementResults,
+      transpiledAsCode: asCode,
+      jsCode: functionCode,
+    });
+
     tempDirectory.removeCallback();
 
-    return NextResponse.json({ result, asCode }, { status: 200 });
+    return NextResponse.json(
+      { asCode, measurementResults, performanceReportId, jsCode: functionCode },
+      { status: 200 },
+    );
   } catch (error) {
     tempDirectory.removeCallback();
 
     const isApiError = error instanceof ApiError;
-
     if (!isApiError) {
-      return NextResponse.json({ message: error.message }, { status: 500 });
+      const isDevelopment = process.env.NODE_ENV === "development";
+      const message = isDevelopment
+        ? { message: error.message }
+        : { message: "서버 내부 에러" };
+
+      return NextResponse.json(message, { status: 500 });
     }
 
     const { message, status, errorStackMessage } = error;
