@@ -4,7 +4,7 @@ export const CODE_EDITOR_DEFAULT_VALUE = `
   }
 `;
 
-export const GUIDE_DIFF_EDITOR_JS_VLAUE = `
+export const GUIDE_DIFF_EDITOR_JS_VALUE = `
   function add(a, b) {
     return a + b;
   }`;
@@ -18,15 +18,20 @@ export const GUIDE_MOCK_DATA = {
   jsCode: "function yourFunction(a, b) { return a + b; }",
   transpiledAsCode:
     "function yourFunction(a: number, b: number): number { return a + b; }",
-  operationTimesPerSecond: [
+  measurementResults: [
     {
-      type: "js",
+      type: "JS",
       operationTimes: 142782,
     },
     {
-      type: "wasm",
+      type: "WASM",
       operationTimes: 582742,
     },
   ],
   performanceReportId: "guide-sample",
+};
+
+export const MODULE_TYPE_TEXT = {
+  JAVASCRIPT: "JS",
+  WEB_ASSEMBLY: "WASM",
 };

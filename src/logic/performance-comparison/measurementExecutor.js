@@ -18,7 +18,7 @@ export default async function executeMeasurementInVm({
   const jsFunc = generateJsCode(javascriptCode, extractedJsFuncName);
 
   const scriptSource = `
-    var operationTimesPerSecond = (async () => {
+    var measurementResults = (async () => {
       return await getPerformanceResultsByFunc({wasmFn, jsFn, args});
     })();
   `;
@@ -35,9 +35,9 @@ export default async function executeMeasurementInVm({
   let executionContext = vm.createContext(sandboxEnv);
   scriptCode.runInContext(executionContext);
 
-  const { operationTimesPerSecond } = executionContext;
+  const { measurementResults } = executionContext;
 
   executionContext = null;
 
-  return await operationTimesPerSecond;
+  return await measurementResults;
 }

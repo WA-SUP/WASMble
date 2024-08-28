@@ -7,7 +7,7 @@ import {
   GUIDE_MOCK_DATA,
   GUIDE_DIFF_EDITOR_JS_VLAUE,
   GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE,
-} from "@/constants/constant";
+} from "@constants/constant";
 
 export default function Guide() {
   return (
