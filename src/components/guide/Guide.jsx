@@ -22,7 +22,7 @@ export default function Guide() {
             <span className="text-2xl mr-2">&#9888;</span>
             Notice!
           </h2>
-          <ul className="mt-2 ml-6 list-disc">
+          <ul className="mt-2 ml-6 list-disc vw-3 md:text-xs lg:text-md xl:text-lg">
             <li>데이터 타입은 원시값(Number, String)만 지원합니다.</li>
             <li>입력한 함수와 동일한 갯수의 매개변수를 입력해주세요.</li>
             <li> 아래는 성능 비교 결과에 대한 예시입니다</li>

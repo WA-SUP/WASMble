@@ -53,11 +53,15 @@ export default function Home() {
 
   async function handleModalSubmit(functionArguments) {
     const functionName = functionCode.match(/function (\w+)/)[1];
-    const functionCall = `${functionName}(${functionArguments.join(", ")})`;
     const normalizedFunctionCode = functionCode.replace(/\n/g, "");
-    const parsedFunctionArguments = JSON.stringify(
-      parseArguments(functionArguments),
-    );
+
+    const functionCall = functionArguments
+      ? `${functionName}(${functionArguments.join(", ")})`
+      : `${functionName}()`;
+
+    const parsedFunctionArguments = functionArguments
+      ? JSON.stringify(parseArguments(functionArguments))
+      : "[]";
 
     const requestBody = {
       functionCall,
