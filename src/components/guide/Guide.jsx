@@ -1,7 +1,10 @@
+import Image from "next/image";
+
+import folderIcon from "@public/folder_filled.svg";
 import ContentBox from "@components/common/ContentBox";
 import DiffEditor from "@components/editor/DiffEditor";
-import SpeedReport from "@/components/visualization/SpeedReport";
-import PerformanceComparisonChart from "@/components/visualization/PerformanceComparisonChart";
+import SpeedReport from "@components/visualization/SpeedReport";
+import PerformanceComparisonChart from "@components/visualization/PerformanceComparisonChart";
 
 import {
   GUIDE_MOCK_DATA,
@@ -18,19 +21,25 @@ export default function Guide() {
           borderColor="border-notice-border"
           bg="bg-color-notice"
         >
-          <h2 className="flex items-center font- text-xl">
+          <h2 className="flex items-center font-semibold text-xl">
             <span className="text-2xl mr-2">&#9888;</span>
             Notice!
           </h2>
-          <ul className="mt-2 ml-6 list-disc vw-3 md:text-xs lg:text-md xl:text-lg">
+          <ul className="mt-2 ml-6 list-disc vw-3 text-xs lg:text-sm 2xl:text-lg">
             <li>데이터 타입은 원시값(Number, String)만 지원합니다.</li>
             <li>입력한 함수와 동일한 갯수의 매개변수를 입력해주세요.</li>
             <li> 아래는 성능 비교 결과에 대한 예시입니다</li>
           </ul>
         </ContentBox>
         <ContentBox width="w-[48%]">
-          <h2 className="flex items-center font-bold text-xl">
-            <span className="text-2xl mr-2">&#128193;</span>
+          <h2 className="flex items-center font-bold text-xs lg:text-sm 2xl:text-lg">
+            <Image
+              src={folderIcon}
+              alt="Archive Logo Image"
+              width={24}
+              priority
+              className="mr-1"
+            />
             Archive
           </h2>
         </ContentBox>
