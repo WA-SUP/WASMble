@@ -54,8 +54,6 @@ export default function Home() {
 
   async function handleModalSubmit(functionArguments) {
     const functionName = functionCode.match(/function (\w+)/)[1];
-    const normalizedFunctionCode = functionCode.replace(/\n/g, "");
-
     const functionCall = functionArguments
       ? `${functionName}(${functionArguments.join(", ")})`
       : `${functionName}()`;
@@ -67,7 +65,7 @@ export default function Home() {
     const requestBody = {
       functionCall,
       functionName,
-      functionCode: normalizedFunctionCode,
+      functionCode,
       functionArguments: parsedFunctionArguments,
     };
 
