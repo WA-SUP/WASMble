@@ -29,7 +29,7 @@ describe("/api/performance-comparison", () => {
     method: "POST",
   });
 
-  it("매개변수가 객체 또는 배열인 경우 타입 추론 에러와 상태코드 200을 반환해야 한다.", async () => {
+  it("매개변수가 객체 또는 배열인 경우 타입 추론 에러와 상태코드 400을 반환해야 한다.", async () => {
     req.json = async () => ({
       functionCode: "function userCode(a) { return a }",
       functionArguments: "[[1, 2, 3]]",
@@ -39,11 +39,11 @@ describe("/api/performance-comparison", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(await response.json()).toHaveProperty("errorStackMessage");
   });
 
-  it("함수 로직 내부에 객체 또는 배열이 존재하는 경우 타입 추론 에러와 상태코드 200을 반환해야 한다.", async () => {
+  it("함수 로직 내부에 객체 또는 배열이 존재하는 경우 타입 추론 에러와 상태코드 400을 반환해야 한다.", async () => {
     req.json = async () => ({
       functionCode: `
         function userCode(a, b) {
@@ -58,7 +58,7 @@ describe("/api/performance-comparison", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(await response.json()).toHaveProperty("errorStackMessage");
   });
 });

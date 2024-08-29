@@ -15,6 +15,7 @@ export default function Home() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [viewState, setViewState] = useState("guide");
   const [errorDetails, setErrorDetails] = useState({});
+  const [measureMentReport, setMeasureMentReport] = useState(null);
 
   function handleOpenArgsInputModal() {
     setIsModalOpen(true);
@@ -53,8 +54,6 @@ export default function Home() {
 
   async function handleModalSubmit(functionArguments) {
     const functionName = functionCode.match(/function (\w+)/)[1];
-    const normalizedFunctionCode = functionCode.replace(/\n/g, "");
-
     const functionCall = functionArguments
       ? `${functionName}(${functionArguments.join(", ")})`
       : `${functionName}()`;
@@ -66,7 +65,7 @@ export default function Home() {
     const requestBody = {
       functionCall,
       functionName,
-      functionCode: normalizedFunctionCode,
+      functionCode,
       functionArguments: parsedFunctionArguments,
     };
 
@@ -83,6 +82,7 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json();
+        setMeasureMentReport(result);
         setViewState("report");
       } else {
         const errorData = await response.json();
@@ -112,7 +112,7 @@ export default function Home() {
       case "loading":
         return <Loading />;
       case "report":
-        return <Report />;
+        return <Report data={measureMentReport} />;
       case "guide":
       default:
         return <Guide />;
@@ -121,17 +121,13 @@ export default function Home() {
 
   return (
     <section className="flex flex-col lg:font-2 lg:flex-row justify-between items-center flex-grow gap-4 p-6">
-      <ContentBox width="w-4/5 xl:w-[33%]">
+      <ContentBox width="w-4/5 lg:w-[33%]">
         <CodeEditorWrapper
           onExecute={handleOpenArgsInputModal}
           setFunctionCode={setFunctionCode}
         />
       </ContentBox>
-      <ContentBox width="w-4/5 xl:w-[66%]">
-        <div className="flex justify-center items-center h-full">
-          {renderContent()}
-        </div>
-      </ContentBox>
+      <ContentBox width="w-4/5 lg:w-[66%]">{renderContent()}</ContentBox>
       <ArgsInputModal
         isOpen={isModalOpen}
         onClose={handleCloseArgsInputModal}
