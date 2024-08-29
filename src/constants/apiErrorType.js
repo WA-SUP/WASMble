@@ -5,7 +5,7 @@ export const ERROR_CASE = {
   },
   EXECUTION_FAULT: {
     message: "Javascript 함수 실행 실패",
-    statusCode: 200,
+    statusCode: 400,
   },
   AST_PARSING_ERROR: {
     message: "AST 파싱 에러",
@@ -17,6 +17,6 @@ export const ERROR_CASE = {
   },
   TYPE_INFERENCE_ERROR: {
     message: "객체와 배열타입은 지원되지 않습니다.",
-    statusCode: 200,
+    statusCode: 400,
   },
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import ContentBox from "@components/common/ContentBox";
-import SkeletonBox from "./SkeletonBox";
+import SkeletonBox from "@components/loading/SkeletonBox";
 
 export default function Loading() {
   return (

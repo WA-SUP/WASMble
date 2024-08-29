@@ -16,10 +16,9 @@ const ErrorModal = ({ isOpen, onClose, errorMessage, statusCode }) => {
         <div className="w-12 h-12 bg-red-500 text-white flex items-center justify-center rounded-full">
           <span className="text-2xl font-bold">!</span>
         </div>
-
-        <h2 className="mt-4 text-xl font-bold text-center">{errorMessage}</h2>
-
-        <p className="mt-2 text-center">(status code: {statusCode})</p>
+        <h2 className="mt-4 text-xl py-8 font-bold text-center">
+          {errorMessage}
+        </h2>
       </div>
 
       <div className="w-full">

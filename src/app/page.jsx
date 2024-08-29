@@ -16,11 +16,11 @@ export default function Home() {
   const [viewState, setViewState] = useState("guide");
   const [errorDetails, setErrorDetails] = useState({});
 
-  function handleOpenModal() {
+  function handleOpenArgsInputModal() {
     setIsModalOpen(true);
   }
 
-  function handleCloseModal() {
+  function handleCloseArgsInputModal() {
     setIsModalOpen(false);
   }
 
@@ -100,7 +100,7 @@ export default function Home() {
       setViewState("guide");
     }
 
-    handleCloseModal();
+    handleCloseArgsInputModal();
   }
 
   function renderContent() {
@@ -119,7 +119,7 @@ export default function Home() {
     <section className="flex flex-col lg:font-2 lg:flex-row justify-between items-center flex-grow gap-4 p-6">
       <ContentBox width="w-4/5 xl:w-[33%]">
         <CodeEditorWrapper
-          onExecute={handleOpenModal}
+          onExecute={handleOpenArgsInputModal}
           setFunctionCode={setFunctionCode}
         />
       </ContentBox>
@@ -130,7 +130,7 @@ export default function Home() {
       </ContentBox>
       <ArgsInputModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={handleCloseArgsInputModal}
         functionCode={functionCode}
         onSubmit={handleModalSubmit}
       />
