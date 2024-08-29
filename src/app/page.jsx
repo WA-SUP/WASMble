@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-
 import CodeEditorWrapper from "@components/editor/CodeEditorWrapper";
 import ContentBox from "@components/common/ContentBox";
-import Modal from "@components/modal/Modal";
+import ArgsInputModal from "@components/modal/ArgsInputModal";
+import ErrorModal from "@components/modal/ErrorModal";
 import Guide from "@components/guide/Guide";
 import Loading from "@components/loading/Loading";
 import Report from "@components/report/Report";
@@ -12,7 +12,9 @@ import Report from "@components/report/Report";
 export default function Home() {
   const [functionCode, setFunctionCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [viewState, setViewState] = useState("guide");
+  const [errorDetails, setErrorDetails] = useState({});
 
   function handleOpenModal() {
     setIsModalOpen(true);
@@ -20,6 +22,23 @@ export default function Home() {
 
   function handleCloseModal() {
     setIsModalOpen(false);
+  }
+
+  function handleOpenErrorModal({
+    message = "",
+    status = 500,
+    errorStackMessage = "",
+  }) {
+    setErrorDetails({
+      errorMessage: message,
+      statusCode: status,
+      errorStackMessage: errorStackMessage,
+    });
+    setIsErrorModalOpen(true);
+  }
+
+  function handleCloseErrorModal() {
+    setIsErrorModalOpen(false);
   }
 
   function parseArguments(functionArguments) {
@@ -32,7 +51,7 @@ export default function Home() {
     });
   }
 
-  const handleModalSubmit = async (functionArguments) => {
+  async function handleModalSubmit(functionArguments) {
     const functionName = functionCode.match(/function (\w+)/)[1];
     const functionCall = `${functionName}(${functionArguments.join(", ")})`;
     const normalizedFunctionCode = functionCode.replace(/\n/g, "");
@@ -60,19 +79,29 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json();
-
         setViewState("report");
       } else {
-        console.error("요청에 실패했습니다:", response.statusText);
+        const errorData = await response.json();
+        handleOpenErrorModal({
+          message: errorData.message,
+          status: response.status,
+          errorStackMessage: errorData.errorStackMessage,
+        });
+
         setViewState("guide");
       }
     } catch (error) {
-      console.error("요청 중 에러 발생:", error);
+      handleOpenErrorModal({
+        message: error.message,
+        status: 500,
+        errorStackMessage: error.stack,
+      });
+
       setViewState("guide");
     }
 
     handleCloseModal();
-  };
+  }
 
   function renderContent() {
     switch (viewState) {
@@ -99,11 +128,18 @@ export default function Home() {
           {renderContent()}
         </div>
       </ContentBox>
-      <Modal
+      <ArgsInputModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         functionCode={functionCode}
         onSubmit={handleModalSubmit}
+      />
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={handleCloseErrorModal}
+        errorMessage={errorDetails.errorMessage}
+        statusCode={errorDetails.statusCode}
+        errorStackMessage={errorDetails.errorStackMessage}
       />
     </section>
   );
