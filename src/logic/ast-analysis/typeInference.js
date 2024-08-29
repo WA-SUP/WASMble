@@ -35,7 +35,6 @@ export default function assignFunctionTypes(
         const { id, init } = path.node;
 
         if (t.isIdentifier(id)) {
-          t.isArrayExpression(init);
           const inferredType = inferType(init.value);
           if (inferredType) {
             id.typeAnnotation = t.tsTypeAnnotation(inferredType);
