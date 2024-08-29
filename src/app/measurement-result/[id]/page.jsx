@@ -18,6 +18,7 @@ export default async function ResultPage({ params }) {
   const { id } = params;
 
   const report = await findPerformanceReportById(id);
+  const { jsCode, transpiledAsCode } = report;
 
   return (
     <section className="flex flex-col justify-center items-center p-6 w-full h-full">
@@ -27,8 +28,8 @@ export default async function ResultPage({ params }) {
             height="100%"
             theme="vs-dark"
             language="javascript"
-            originalCode={report.jsCode}
-            modifiedCode={report.transpiledAsCode}
+            originalCode={jsCode}
+            modifiedCode={transpiledAsCode}
             options={{
               renderSideBySide: true,
               readOnly: true,
