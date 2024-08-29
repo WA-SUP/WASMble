@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import folderIcon from "@public/folder_filled.svg";
 import ContentBox from "@components/common/ContentBox";
-import DiffEditor from "@components/editor/DiffEditor";
+import GuideDiffEditor from "@components/editor/GuideDiffEditor";
 import SpeedReport from "@components/visualization/SpeedReport";
 import PerformanceComparisonChart from "@components/visualization/PerformanceComparisonChart";
 
@@ -45,7 +45,7 @@ export default function Guide() {
         </ContentBox>
       </div>
       <ContentBox custom="flex flex-col justify-around items-center gap-2">
-        <DiffEditor
+        <GuideDiffEditor
           originalCode={GUIDE_DIFF_EDITOR_JS_VALUE}
           modifiedCode={GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE}
         />

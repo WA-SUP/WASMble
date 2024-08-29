@@ -1,7 +1,9 @@
+"use client";
+
 import React from "react";
 import { DiffEditor } from "@monaco-editor/react";
 
-export default function MyDiffEditor({ originalCode, modifiedCode }) {
+export default function GuideDiffEditor({ originalCode, modifiedCode }) {
   return (
     <DiffEditor
       height="6.9rem"

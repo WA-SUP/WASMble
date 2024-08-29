@@ -22,10 +22,14 @@ export async function POST(request) {
     const { functionCode, functionCall, functionArguments, functionName } =
       await request.json();
     const parsedFunctionArguments = JSON.parse(functionArguments);
+    const normalizedFunctionCode = functionCode.replace(/\n/g, "");
 
-    const userCodeResult = await executeUserCode(functionCode, functionCall);
+    const userCodeResult = await executeUserCode(
+      normalizedFunctionCode,
+      functionCall,
+    );
 
-    const jsAst = parseJscodeToAST(functionCode);
+    const jsAst = parseJscodeToAST(normalizedFunctionCode);
 
     validateArgsLength(jsAst, parsedFunctionArguments);
 
@@ -34,7 +38,11 @@ export async function POST(request) {
       parsedFunctionArguments,
       userCodeResult,
     );
-    const { code: asCode } = generate.default(asAst, {}, functionCode);
+    const { code: asCode } = generate.default(
+      asAst,
+      {},
+      normalizedFunctionCode,
+    );
 
     const asFilePath = await moduleBuild.createAsModule(
       asCode,
@@ -51,7 +59,7 @@ export async function POST(request) {
 
     const measurementResults = await executeMeasurementInVm({
       wasmBuffer,
-      javascriptCode: functionCode,
+      javascriptCode: normalizedFunctionCode,
       extractedJsFuncName: functionName,
       args: parsedFunctionArguments,
     });
