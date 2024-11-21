@@ -178,8 +178,6 @@ npx asc ${어셈블리스크립트 코드 위치} --outFile ${웹어셈블리 �
 
 그러나 자바스크립트는 가비지 컬렉션(Garbage Collection, GC)을 통해 메모리를 동적으로 관리하는 반면, 웹어셈블리는 정적으로 할당된 메모리를 사용하며(linear memory) 수동으로 메모리를 관리해야 합니다. 이 차이로 인해 복잡한 자료형, 특히 참조형 자료(객체, 배열 등)를 전달하거나 변환하는 데 어려움이 생깁니다.
 
-예를들어 어셈블리스크립트는 단일타입의 배열만 지원하기 때문에 완벽하게 자바스크립트 코드를 변환할 수 없었습니다.
-
 <div align="center">
   <img src="https://github.com/user-attachments/assets/2698f143-17bc-4098-af29-7babf898ccfa" width="300rem"/>
 
