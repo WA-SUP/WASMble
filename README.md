@@ -292,8 +292,7 @@ isolated-vm은 자바스크립트 코드 실행을 격리하고, 제한된 자�
 <br>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/9dffa476-7e4d-44bb-8e01-b097ec7f2066
-  " width="300rem"/>
+  <img src="https://github.com/user-attachments/assets/9dffa476-7e4d-44bb-8e01-b097ec7f2066" width="300rem"/>
 
 _isolated-vm과 도커를 통한 사용자 코드 환경 분리_
 
