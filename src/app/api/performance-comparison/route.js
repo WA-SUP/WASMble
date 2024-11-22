@@ -86,6 +86,8 @@ export async function POST(request) {
         ? { message: error.message }
         : { message: "서버 내부 에러" };
 
+      console.error(error.message);
+
       return NextResponse.json(message, { status: 500 });
     }
 
