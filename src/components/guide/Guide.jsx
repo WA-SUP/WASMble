@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import folderIcon from "@public/folder_filled.svg";
 import ContentBox from "@components/common/ContentBox";
@@ -42,6 +43,27 @@ export default function Guide() {
             />
             Archive
           </h2>
+          <ul className="mt-2 ml-6 list-disc vw-3 text-xs lg:text-sm 2xl:text-lg">
+            <li>
+              <Link href="/measurement-result/f675218f-b86f-41df-88c0-6736a9283a4d">
+                <span className="text-blue-500 hover:underline">
+                  중첩 반복문
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/measurement-result/dd44e9f4-26a0-462e-aac1-3073a53f75b1">
+                <span className="text-blue-500 hover:underline">팩토리얼</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/measurement-result/9e057c96-7c37-4d3c-acbf-93d711aad703">
+                <span className="text-blue-500 hover:underline">
+                  피보나치 수열
+                </span>
+              </Link>
+            </li>
+          </ul>
         </ContentBox>
       </div>
       <ContentBox custom="flex flex-col justify-around items-center gap-2">
