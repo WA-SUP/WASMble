@@ -30,6 +30,14 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY --from=builder /app/node_modules/assemblyscript ./node_modules/assemblyscript
+COPY --from=builder /app/node_modules/binaryen ./node_modules/binaryen
+COPY --from=builder /app/node_modules/long ./node_modules/long
+RUN mv ./node_modules/assemblyscript/bin/asc.js ./node_modules/assemblyscript/bin/asc.mjs
+
+RUN mkdir ./node_modules/.bin
+RUN ln -s ../assemblyscript/bin/asc.mjs ./node_modules/.bin/asc
+
 USER nextjs
 
 EXPOSE 3000
