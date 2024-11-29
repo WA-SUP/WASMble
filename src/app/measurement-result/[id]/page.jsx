@@ -19,12 +19,18 @@ export async function generateMetadata({ params }) {
 
   return {
     title: "WASMble",
+    description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
     metadataBase: new URL(process.env.PROJECT_URL),
     openGraph: {
       title: "WASMble",
       description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
-      images: ["/wasmble.png"],
-      url: id,
+      images: [
+        {
+          url: "/wasmble.png",
+          alt: "WASMble logo",
+        },
+      ],
+      url: `measurement-result/${id}`,
     },
   };
 }
