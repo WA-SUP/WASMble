@@ -14,6 +14,21 @@ const DynamicDiffEditor = dynamic(
   { ssr: false },
 );
 
+export async function generateMetadata({ params }) {
+  const { id } = params;
+
+  return {
+    title: "WASMble",
+    metadataBase: new URL(process.env.PROJECT_URL),
+    openGraph: {
+      title: "WASMble",
+      description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
+      images: ["/wasmble.png"],
+      url: id,
+    },
+  };
+}
+
 export default async function ResultPage({ params }) {
   const { id } = params;
 
