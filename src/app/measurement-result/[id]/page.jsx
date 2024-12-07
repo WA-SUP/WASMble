@@ -14,6 +14,27 @@ const DynamicDiffEditor = dynamic(
   { ssr: false },
 );
 
+export async function generateMetadata({ params }) {
+  const { id } = params;
+
+  return {
+    title: "WASMble",
+    description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
+    metadataBase: new URL(process.env.PROJECT_URL),
+    openGraph: {
+      title: "WASMble",
+      description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
+      images: [
+        {
+          url: "/wasmble.png",
+          alt: "WASMble logo",
+        },
+      ],
+      url: `measurement-result/${id}`,
+    },
+  };
+}
+
 export default async function ResultPage({ params }) {
   const { id } = params;
 
@@ -22,7 +43,7 @@ export default async function ResultPage({ params }) {
 
   return (
     <section className="flex flex-col justify-center items-center p-6 w-full h-full">
-      <div className="flex flex-col h-full min-h-[50vh]">
+      <div className="flex flex-col h-full w-full min-h-[50vh]">
         <div className="h-1/2 pb-3">
           <DynamicDiffEditor
             height="100%"
