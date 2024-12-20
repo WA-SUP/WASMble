@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing dependencies...
+      - npm ci
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 108782060860.dkr.ecr.us-east-2.amazonaws.com/wasmble-docker
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t wasmble-docker .
+  post_build:
+    commands:
+      - echo Build completed
+      - docker tag wasmble-docker:latest 108782060860.dkr.ecr.us-east-2.amazonaws.com/wasmble-docker:latest
+      - docker push 108782060860.dkr.ecr.us-east-2.amazonaws.com/wasmble-docker:latest
