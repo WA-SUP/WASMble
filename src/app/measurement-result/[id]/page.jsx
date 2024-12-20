@@ -7,15 +7,13 @@ import { findPerformanceReportById } from "@logic/db-query/performanceResultQuer
 
 const DynamicPerformanceComparisonChart = dynamic(
   () => import("@components/visualization/PerformanceComparisonChart"),
-  { ssr: false },
 );
 const DynamicDiffEditor = dynamic(
   () => import("@components/editor/ReportDiffEditor"),
-  { ssr: false },
 );
 
 export async function generateMetadata({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   return {
     title: "WASMble",
@@ -36,7 +34,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ResultPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   const report = await findPerformanceReportById(id);
   const { jsCode, transpiledAsCode } = report;

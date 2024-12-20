@@ -8,29 +8,22 @@ export default async function executeVmCode(
   userFunctionCall,
 ) {
   const isolatedVm = new ivm.Isolate({ memoryLimit: 128 });
-  const context = await isolatedVm.createContext();
-  const timeoutLimit = 5000;
-
-  let timeoutId;
-
-  const timeoutPromise = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => {
-      reject(new Error("시간 초과"));
-    }, timeoutLimit);
-  });
+  const timeoutLimit = 1000;
 
   try {
+    const context = await isolatedVm.createContext();
     const script = await isolatedVm.compileScript(
       userFunctionCode + userFunctionCall,
     );
-    const result = await Promise.race([script.run(context), timeoutPromise]);
+    const result = await script.run(context, {
+      timeout: timeoutLimit,
+      release: true,
+    });
 
     return result;
   } catch (error) {
     throw new ApiError(ERROR_CASE.EXECUTION_FAULT, error.message);
   } finally {
-    clearTimeout(timeoutId);
-    context.release();
     isolatedVm.dispose();
   }
 }
