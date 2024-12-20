@@ -80,19 +80,19 @@ export async function POST(request) {
     tempDirectory.removeCallback();
 
     const isApiError = error instanceof ApiError;
-    if (!isApiError) {
-      const isDevelopment = process.env.NODE_ENV === "development";
-      const message = isDevelopment
-        ? { message: error.message }
-        : { message: "서버 내부 에러" };
+    if (isApiError) {
+      const { message, status, errorStackMessage } = error;
+      console.error(`${message}: ${errorStackMessage}`);
 
-      console.error(error.message);
-
-      return NextResponse.json(message, { status: 500 });
+      return NextResponse.json({ message, errorStackMessage }, { status });
     }
+    const isDevelopment = process.env.NODE_ENV === "development";
+    const message = isDevelopment
+      ? { message: error.message }
+      : { message: "서버 내부 에러" };
 
-    const { message, status, errorStackMessage } = error;
+    console.error(error.message);
 
-    return NextResponse.json({ message, errorStackMessage }, { status });
+    return NextResponse.json(message, { status: 500 });
   }
 }
