@@ -1,6 +1,6 @@
 import React from "react";
 
-const GuideText = () => {
+export default function GuideText(): React.JSX.Element {
   return (
     <div className="text-xs whitespace-pre-wrap max-w-full rounded-lg p-4">
       <p className="mb-4">
@@ -81,6 +81,4 @@ const GuideText = () => {
       </ol>
     </div>
   );
-};
-
-export default GuideText;
+}

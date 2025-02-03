@@ -5,11 +5,26 @@ import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
 
-export default function PerformanceComparisonChart({ data }) {
-  const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null);
+interface MeasurementResult {
+  type: string;
+  operationTimes: number;
+}
+
+interface PerformanceComparisonChartProps {
+  data: {
+    measurementResults: MeasurementResult[];
+  };
+}
+
+export default function PerformanceComparisonChart({
+  data,
+}: PerformanceComparisonChartProps): React.JSX.Element {
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
 
   useEffect(() => {
+    if (!chartRef.current) return;
+
     const labels = data.measurementResults.map((item) =>
       item.type.toUpperCase(),
     );
@@ -35,7 +50,7 @@ export default function PerformanceComparisonChart({ data }) {
     };
 
     const options = {
-      indexAxis: "y",
+      indexAxis: "y" as const,
       scales: {
         x: {
           beginAtZero: true,
@@ -59,7 +74,7 @@ export default function PerformanceComparisonChart({ data }) {
       plugins: {
         legend: {
           display: true,
-          position: "top",
+          position: "top" as const,
           labels: {
             color: "#fff",
             font: {

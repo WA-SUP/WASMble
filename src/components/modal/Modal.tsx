@@ -2,6 +2,16 @@
 
 import Button from "@components/button/Button";
 
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  width?: string;
+  height?: string;
+  padding?: string;
+}
+
 export default function Modal({
   isOpen,
   onClose,
@@ -10,7 +20,7 @@ export default function Modal({
   width = "w-1/2",
   height = "h-1/2",
   padding = "p-10",
-}) {
+}: ModalProps): React.JSX.Element | null {
   if (!isOpen) return null;
 
   return (

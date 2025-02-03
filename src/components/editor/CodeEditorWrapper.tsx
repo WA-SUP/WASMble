@@ -4,8 +4,16 @@ import { useState } from "react";
 import Button from "@components/button/Button";
 import CodeEditor from "@components/editor/CodeEditor";
 
-export default function CodeEditorWrapper({ setFunctionCode, onExecute }) {
-  const [userWrittenCode, setUserWrittenCode] = useState("");
+interface CodeEditorWrapperProps {
+  setFunctionCode: (code: string) => void;
+  onExecute: () => void;
+}
+
+export default function CodeEditorWrapper({
+  setFunctionCode,
+  onExecute,
+}: CodeEditorWrapperProps): React.JSX.Element {
+  const [userWrittenCode, setUserWrittenCode] = useState<string>("");
 
   const handleClick = () => {
     setFunctionCode(userWrittenCode);

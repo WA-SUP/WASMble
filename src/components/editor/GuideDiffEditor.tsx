@@ -3,7 +3,15 @@
 import React from "react";
 import { DiffEditor } from "@monaco-editor/react";
 
-export default function GuideDiffEditor({ originalCode, modifiedCode }) {
+interface GuideDiffEditorProps {
+  originalCode: string;
+  modifiedCode: string;
+}
+
+export default function GuideDiffEditor({
+  originalCode,
+  modifiedCode,
+}: GuideDiffEditorProps): React.JSX.Element {
   return (
     <DiffEditor
       height="6.9rem"

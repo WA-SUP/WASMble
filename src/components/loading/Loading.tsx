@@ -3,7 +3,7 @@
 import ContentBox from "@components/common/ContentBox";
 import SkeletonBox from "@components/loading/SkeletonBox";
 
-export default function Loading() {
+export default function Loading(): React.JSX.Element {
   return (
     <div className="flex flex-col justify-between p-3 w-full h-full">
       <ContentBox custom="flex flex-col justify-around items-center gap-2">

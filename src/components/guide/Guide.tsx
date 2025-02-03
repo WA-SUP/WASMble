@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import folderIcon from "@public/folder_filled.svg";
 import ContentBox from "@components/common/ContentBox";
 import GuideDiffEditor from "@components/editor/GuideDiffEditor";
 import SpeedReport from "@components/visualization/SpeedReport";
@@ -13,7 +12,7 @@ import {
   GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE,
 } from "@constants/constant";
 
-export default function Guide() {
+export default function Guide(): React.JSX.Element {
   return (
     <div className="flex flex-col justify-between p-3 w-full h-full">
       <div className="flex flex-row justify-between h-48 pb-3">
@@ -35,9 +34,10 @@ export default function Guide() {
         <ContentBox width="w-[48%]">
           <h2 className="flex items-center font-bold text-xs lg:text-sm 2xl:text-lg">
             <Image
-              src={folderIcon}
+              src="/folder_filled.svg"
               alt="Archive Logo Image"
               width={24}
+              height={24}
               priority
               className="mr-1"
             />

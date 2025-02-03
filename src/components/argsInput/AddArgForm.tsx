@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 
-export default function AddArgForm({ onAddArg }) {
-  const [currentArg, setCurrentArg] = useState("");
+interface AddArgFormProps {
+  onAddArg: (arg: string) => void;
+}
 
-  const handleCurrentArgChange = (e) => {
+export default function AddArgForm({
+  onAddArg,
+}: AddArgFormProps): React.JSX.Element {
+  const [currentArg, setCurrentArg] = useState<string>("");
+
+  const handleCurrentArgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentArg(e.target.value);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       onAddArg(currentArg);

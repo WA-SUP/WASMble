@@ -2,7 +2,15 @@
 
 import Button from "@components/button/Button";
 
-export default function ReportShareButton({ className, performanceReportId }) {
+interface ReportShareButtonProps {
+  className: string;
+  performanceReportId: string;
+}
+
+export default function ReportShareButton({
+  className,
+  performanceReportId,
+}: ReportShareButtonProps): React.JSX.Element {
   async function handleReportShareButtonClick() {
     const urlToShare = `${window.location.origin}/measurement-result/${performanceReportId}`;
 
@@ -12,6 +20,7 @@ export default function ReportShareButton({ className, performanceReportId }) {
       console.error(error);
     }
   }
+
   return (
     <Button
       className={className}

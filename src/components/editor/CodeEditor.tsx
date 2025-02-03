@@ -1,19 +1,27 @@
 "use client";
 
 import { useRef } from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { OnMount } from "@monaco-editor/react";
 
 import { CODE_EDITOR_DEFAULT_VALUE } from "@constants/constant";
 
-export default function CodeEditor({ onCodeChange }) {
-  const editorRef = useRef(null);
+interface CodeEditorProps {
+  onCodeChange: (code: string) => void;
+}
 
-  function handleEditorMount(editor, monaco) {
+export default function CodeEditor({
+  onCodeChange,
+}: CodeEditorProps): React.JSX.Element {
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+
+  function handleEditorMount(editor: Parameters<OnMount>[0]): void {
     editorRef.current = editor;
   }
 
-  function handleEditorChange(value, e) {
-    onCodeChange(value);
+  function handleEditorChange(value: string | undefined): void {
+    if (value !== undefined) {
+      onCodeChange(value);
+    }
   }
 
   return (

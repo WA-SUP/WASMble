@@ -2,7 +2,17 @@
 
 import Button from "@components/button/Button";
 
-export default function ArgsInput({ value, index, onRemove }) {
+interface ArgsInputProps {
+  value: string;
+  index: number;
+  onRemove: (index: number) => void;
+}
+
+export default function ArgsInput({
+  value,
+  index,
+  onRemove,
+}: ArgsInputProps): React.JSX.Element {
   return (
     <div key={index} className="mb-2 flex items-center w-11/12 input-item">
       <input

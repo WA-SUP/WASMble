@@ -6,7 +6,21 @@ import SpeedReport from "@components/visualization/SpeedReport";
 import PerformanceComparisonChart from "@components/visualization/PerformanceComparisonChart";
 import ReportShareButton from "@components/report/ReportShareButton";
 
-export default function Report({ data }) {
+interface MeasurementResult {
+  type: string;
+  operationTimes: number;
+}
+
+interface ReportProps {
+  data: {
+    asCode: string;
+    jsCode: string;
+    performanceReportId: string;
+    measurementResults: MeasurementResult[];
+  };
+}
+
+export default function Report({ data }: ReportProps): React.JSX.Element {
   const { asCode, jsCode, performanceReportId } = data;
 
   return (

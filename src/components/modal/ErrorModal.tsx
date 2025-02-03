@@ -3,7 +3,20 @@
 import Modal from "@components/modal/Modal";
 import Button from "@components/button/Button";
 
-const ErrorModal = ({ isOpen, onClose, errorMessage, statusCode }) => {
+interface ErrorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  errorMessage: string;
+  statusCode: number;
+  errorStackMessage: string;
+}
+
+const ErrorModal = ({
+  isOpen,
+  onClose,
+  errorMessage,
+  statusCode,
+}: ErrorModalProps): React.JSX.Element => {
   return (
     <Modal
       isOpen={isOpen}

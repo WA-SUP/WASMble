@@ -3,7 +3,15 @@
 import React from "react";
 import { DiffEditor } from "@monaco-editor/react";
 
-export default function ReportDiffEditor({ originalCode, modifiedCode }) {
+interface ReportDiffEditorProps {
+  originalCode: string;
+  modifiedCode: string;
+}
+
+export default function ReportDiffEditor({
+  originalCode,
+  modifiedCode,
+}: ReportDiffEditorProps): React.JSX.Element {
   return (
     <DiffEditor
       height="100%"

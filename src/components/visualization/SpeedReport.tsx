@@ -1,15 +1,27 @@
 import Image from "next/image";
 import { MODULE_TYPE_TEXT } from "@constants/constant";
 
-export default function SpeedReport({ data }) {
-  const { measurementResults } = data;
-  const wasmOperationTimes = measurementResults.find(
-    (item) => item.type === MODULE_TYPE_TEXT.WEB_ASSEMBLY,
-  ).operationTimes;
+interface MeasurementResult {
+  type: string;
+  operationTimes: number;
+}
 
-  const jsOperationTimes = measurementResults.find(
-    (item) => item.type === MODULE_TYPE_TEXT.JAVASCRIPT,
-  ).operationTimes;
+interface SpeedReportProps {
+  data: {
+    measurementResults: MeasurementResult[];
+  };
+}
+
+export default function SpeedReport({ data }: SpeedReportProps): JSX.Element {
+  const { measurementResults } = data;
+  const wasmOperationTimes =
+    measurementResults.find(
+      (item) => item.type === MODULE_TYPE_TEXT.WEB_ASSEMBLY,
+    )?.operationTimes ?? 1;
+
+  const jsOperationTimes =
+    measurementResults.find((item) => item.type === MODULE_TYPE_TEXT.JAVASCRIPT)
+      ?.operationTimes ?? 1;
 
   const speedDifference = (wasmOperationTimes / jsOperationTimes).toFixed(2);
 

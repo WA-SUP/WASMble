@@ -4,14 +4,21 @@ import { useState, useEffect } from "react";
 import Modal from "@components/modal/Modal";
 import Button from "@components/button/Button";
 
+interface ArgsInputModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  functionCode: string;
+  onSubmit: (args: (string | number)[]) => void;
+}
+
 export default function ArgsInputModal({
   isOpen,
   onClose,
   functionCode,
   onSubmit,
-}) {
-  const [args, setArgs] = useState({});
-  const [params, setParams] = useState([]);
+}: ArgsInputModalProps): React.JSX.Element {
+  const [args, setArgs] = useState<Record<number, string>>({});
+  const [params, setParams] = useState<string[]>([]);
 
   useEffect(() => {
     if (functionCode) {
@@ -23,26 +30,25 @@ export default function ArgsInputModal({
         setParams(paramsArray);
         setArgs({});
       } else {
-        onSubmit();
+        onSubmit([]);
         onClose();
       }
     }
   }, [functionCode]);
 
-  const handleArgChange = (index, value) => {
+  const handleArgChange = (index: number, value: string) => {
     setArgs((prevArgs) => ({
       ...prevArgs,
-      [index]: value.trim() === "" ? undefined : value,
+      [index]: value.trim(),
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const filteredArgs = params
-      .map((_, index) => args[index])
-      .filter((arg) => arg !== undefined);
-
+    const filteredArgs = params.map((_, index) => {
+      const value = args[index];
+      return isNaN(Number(value)) ? value : Number(value);
+    });
     onSubmit(filteredArgs);
     onClose();
   };
@@ -66,7 +72,6 @@ export default function ArgsInputModal({
             </div>
           ))}
         </div>
-
         <div className="flex justify-end mt-auto">
           <Button
             text="실행"
