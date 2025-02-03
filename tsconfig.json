@@ -12,8 +12,24 @@
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/utils/*"],
+      "@logic/*": ["src/logic/*"],
+      "@public/*": ["public/*"]
+    },
+    "noEmit": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src"],
+  "include": ["src", ".next/types/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
