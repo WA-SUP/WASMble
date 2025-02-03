@@ -9,64 +9,76 @@ import Guide from "@components/guide/Guide";
 import Loading from "@components/loading/Loading";
 import Report from "@components/report/Report";
 
-export default function Home() {
-  const [functionCode, setFunctionCode] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [viewState, setViewState] = useState("guide");
-  const [errorDetails, setErrorDetails] = useState({});
-  const [measureMentReport, setMeasureMentReport] = useState(null);
+interface ErrorDetails {
+  errorMessage: string;
+  statusCode: number;
+  errorStackMessage: string;
+}
 
-  function handleOpenArgsInputModal() {
+interface MeasurementReport {
+  asCode: string;
+  jsCode: string;
+  measurementResults: { type: string; operationTimes: number }[];
+  performanceReportId: string;
+}
+
+export default function Home(): JSX.Element {
+  const [functionCode, setFunctionCode] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const [viewState, setViewState] = useState<"guide" | "loading" | "report">(
+    "guide",
+  );
+  const [errorDetails, setErrorDetails] = useState<ErrorDetails>({
+    errorMessage: "",
+    statusCode: 500,
+    errorStackMessage: "",
+  });
+  const [measureMentReport, setMeasureMentReport] =
+    useState<MeasurementReport | null>(null);
+
+  function handleOpenArgsInputModal(): void {
     setIsModalOpen(true);
   }
 
-  function handleCloseArgsInputModal() {
+  function handleCloseArgsInputModal(): void {
     setIsModalOpen(false);
   }
 
-  function handleOpenErrorModal({
-    message = "",
-    status = 500,
-    errorStackMessage = "",
-  }) {
-    setErrorDetails({
-      errorMessage: message,
-      statusCode: status,
-      errorStackMessage: errorStackMessage,
-    });
+  function handleOpenErrorModal(details: Partial<ErrorDetails>): void {
+    setErrorDetails((prev) => ({
+      ...prev,
+      ...details,
+    }));
     setIsErrorModalOpen(true);
   }
 
-  function handleCloseErrorModal() {
+  function handleCloseErrorModal(): void {
     setIsErrorModalOpen(false);
   }
 
-  function parseArguments(functionArguments) {
-    return [...functionArguments].map((element) => {
-      try {
-        return JSON.parse(element);
-      } catch (error) {
-        return element;
-      }
-    });
-  }
+  async function handleModalSubmit(
+    functionArguments: (string | number)[],
+  ): Promise<void> {
+    const functionNameMatch = functionCode.match(/function (\w+)/);
+    const functionName = functionNameMatch ? functionNameMatch[1] : "";
 
-  async function handleModalSubmit(functionArguments) {
-    const functionName = functionCode.match(/function (\w+)/)[1];
-    const functionCall = functionArguments
-      ? `${functionName}(${functionArguments.join(", ")})`
-      : `${functionName}()`;
+    if (!functionName) {
+      handleOpenErrorModal({
+        errorMessage: "Function name could not be parsed.",
+        statusCode: 400,
+        errorStackMessage: "Ensure your function is properly defined.",
+      });
+      return;
+    }
 
-    const parsedFunctionArguments = functionArguments
-      ? JSON.stringify(parseArguments(functionArguments))
-      : "[]";
+    const functionCall = `${functionName}(${functionArguments.join(", ")})`;
 
     const requestBody = {
       functionCall,
       functionName,
       functionCode,
-      functionArguments: parsedFunctionArguments,
+      functionArguments: JSON.stringify(functionArguments),
     };
 
     try {
@@ -74,45 +86,45 @@ export default function Home() {
 
       const response = await fetch("/api/performance-comparison", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
 
       if (response.ok) {
-        const result = await response.json();
+        const result: MeasurementReport = await response.json();
         setMeasureMentReport(result);
         setViewState("report");
       } else {
         const errorData = await response.json();
         handleOpenErrorModal({
-          message: errorData.message,
-          status: response.status,
+          errorMessage: errorData.message,
+          statusCode: response.status,
           errorStackMessage: errorData.errorStackMessage,
         });
-
         setViewState("guide");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       handleOpenErrorModal({
-        message: error.message,
-        status: 500,
-        errorStackMessage: error.stack,
+        errorMessage: (error as Error).message,
+        statusCode: 500,
+        errorStackMessage: (error as Error).stack || "",
       });
-
       setViewState("guide");
     }
 
     handleCloseArgsInputModal();
   }
 
-  function renderContent() {
+  function renderContent(): JSX.Element {
     switch (viewState) {
       case "loading":
         return <Loading />;
       case "report":
-        return <Report data={measureMentReport} />;
+        return measureMentReport ? (
+          <Report data={measureMentReport} />
+        ) : (
+          <Guide />
+        );
       case "guide":
       default:
         return <Guide />;
