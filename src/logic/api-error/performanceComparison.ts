@@ -1,8 +1,16 @@
+import { ERROR_CASE, ErrorCaseType } from "@/constants/apiErrorType";
+
 export default class ApiError extends Error {
-  constructor(type, errorStackMessage = "") {
-    super(type.message);
+  status: number;
+  errorStackMessage: string;
+
+  constructor(
+    errorCase: (typeof ERROR_CASE)[ErrorCaseType],
+    errorStackMessage = "",
+  ) {
+    super(errorCase.message);
     this.name = this.constructor.name;
-    this.status = type.statusCode;
+    this.status = errorCase.statusCode;
     this.errorStackMessage = errorStackMessage;
   }
 }

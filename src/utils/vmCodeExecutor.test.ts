@@ -17,7 +17,7 @@ describe("executeVmCode", () => {
     const userFunction = `
       function userCode() {
         while(true) {};
-       }
+      }
     `;
     const userFunctionCall = "userCode()";
 

@@ -19,4 +19,10 @@ export const ERROR_CASE = {
     message: "객체와 배열타입은 지원되지 않습니다.",
     statusCode: 400,
   },
-};
+  INVALID_ARGUMENTS_TYPE: {
+    message: "함수 인수는 문자열 또는 숫자여야 합니다.",
+    statusCode: 400,
+  },
+} as const;
+
+export type ErrorCaseType = keyof typeof ERROR_CASE;

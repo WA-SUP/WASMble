@@ -11,6 +11,11 @@ export const GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE = `function add(a: i32, b: i3
   return a + b;
 }`;
 
+export interface MeasurementResult {
+  type: string;
+  operationTimes: number;
+}
+
 export const GUIDE_MOCK_DATA = {
   jsCode: "function yourFunction(a, b) { return a + b; }",
   transpiledAsCode:
@@ -24,11 +29,13 @@ export const GUIDE_MOCK_DATA = {
       type: "WASM",
       operationTimes: 582742,
     },
-  ],
+  ] as MeasurementResult[],
   performanceReportId: "guide-sample",
 };
 
 export const MODULE_TYPE_TEXT = {
   JAVASCRIPT: "JS",
   WEB_ASSEMBLY: "WASM",
-};
+} as const;
+
+export type ModuleType = keyof typeof MODULE_TYPE_TEXT;
