@@ -26,12 +26,7 @@ export async function generateMetadata({ params }: ResultPageProps) {
     openGraph: {
       title: "WASMble",
       description: "JavaScript 코드와 WebAssembly 코드의 성능을 비교해 줍니다.",
-      images: [
-        {
-          url: "/wasmble.png",
-          alt: "WASMble logo",
-        },
-      ],
+      images: [{ url: "/wasmble.png", alt: "WASMble logo" }],
       url: `measurement-result/${id}`,
     },
   };
@@ -41,7 +36,6 @@ export default async function ResultPage({
   params,
 }: ResultPageProps): Promise<JSX.Element> {
   const { id } = params;
-
   const report = await findPerformanceReportById(id);
 
   if (!report) {
