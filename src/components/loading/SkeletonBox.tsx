@@ -8,6 +8,8 @@ export default function SkeletonBox({
   height,
 }: SkeletonBoxProps): React.JSX.Element {
   return (
-    <div className={`bg-black ${width} ${height} shimmer rounded-md`}></div>
+    <div
+      className={`bg-black ${width} ${height} shimmer rounded-md flex-grow min-h-0`}
+    />
   );
 }

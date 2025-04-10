@@ -132,14 +132,16 @@ export default function Home(): JSX.Element {
   }
 
   return (
-    <section className="flex flex-col lg:font-2 lg:flex-row justify-between items-center flex-grow gap-4 p-6">
-      <ContentBox width="w-4/5 lg:w-[33%]">
+    <section className="flex flex-col lg:flex-row justify-center items-stretch gap-4 p-4 lg:p-6">
+      <ContentBox custom="flex flex-col justify-between min-h-0 w-full lg:w-1/3 overflow-hidden">
         <CodeEditorWrapper
           onExecute={handleOpenArgsInputModal}
           setFunctionCode={setFunctionCode}
         />
       </ContentBox>
-      <ContentBox width="w-4/5 lg:w-[66%]">{renderContent()}</ContentBox>
+      <ContentBox custom="flex flex-col justify-center min-h-0 w-full lg:w-2/3 overflow-hidden">
+        {renderContent()}
+      </ContentBox>
       <ArgsInputModal
         isOpen={isModalOpen}
         onClose={handleCloseArgsInputModal}

@@ -10,7 +10,7 @@ interface ContentBoxProps {
 export default function ContentBox({
   children,
   width = "w-full",
-  height = "h-full",
+  height = "h-auto",
   bg = "bg-inherit",
   borderColor = "border-slate-200/10",
   custom = "",

@@ -14,7 +14,7 @@ export default function ReportDiffEditor({
 }: ReportDiffEditorProps): React.JSX.Element {
   return (
     <DiffEditor
-      height="100%"
+      height="15rem"
       theme="vs-dark"
       language="javascript"
       original={originalCode}
@@ -22,6 +22,8 @@ export default function ReportDiffEditor({
       options={{
         renderSideBySide: true,
         readOnly: true,
+        minimap: { enabled: false },
+        scrollBeyondLastLine: false,
       }}
     />
   );

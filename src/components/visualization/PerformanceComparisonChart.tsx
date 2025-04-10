@@ -50,39 +50,25 @@ export default function PerformanceComparisonChart({
     };
 
     const options = {
+      responsive: true,
+      maintainAspectRatio: false,
       indexAxis: "y" as const,
       scales: {
         x: {
           beginAtZero: true,
-          grid: {
-            color: "rgba(255, 255, 255, 0.2)",
-          },
-          ticks: {
-            color: "#fff",
-          },
+          grid: { color: "rgba(255, 255, 255, 0.2)" },
+          ticks: { color: "#fff", maxTicksLimit: 5 },
         },
         y: {
-          grid: {
-            color: "rgba(255, 255, 255, 0.2)",
-          },
-          ticks: {
-            color: "#fff",
-            padding: 10,
-          },
+          grid: { color: "rgba(255, 255, 255, 0.2)" },
+          ticks: { color: "#fff", padding: 5, font: { size: 12 } },
         },
       },
       plugins: {
         legend: {
           display: true,
           position: "top" as const,
-          labels: {
-            color: "#fff",
-            font: {
-              size: 14,
-            },
-            boxWidth: 0,
-            boxHeight: 0,
-          },
+          labels: { color: "#fff", font: { size: 12 }, boxWidth: 0 },
         },
       },
       backgroundColor: "rgba(0, 0, 0, 0)",
@@ -94,21 +80,20 @@ export default function PerformanceComparisonChart({
       options: options,
     });
 
-    function handleChartResize() {
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.resize();
-      }
-    }
-
-    window.addEventListener("resize", handleChartResize);
+    window.addEventListener("resize", () => {
+      chartInstanceRef.current?.resize();
+    });
 
     return () => {
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy();
-      }
-      window.removeEventListener("resize", handleChartResize);
+      chartInstanceRef.current?.destroy();
     };
   }, [data]);
 
-  return <canvas ref={chartRef} />;
+  return (
+    <canvas
+      ref={chartRef}
+      className="w-full h-full max-h-[400px] min-h-[250px] p-2 sm:p-4"
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 }

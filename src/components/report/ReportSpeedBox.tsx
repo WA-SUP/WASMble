@@ -8,5 +8,5 @@ interface ReportSpeedBoxProps {
 export default function ReportSpeedBox({
   children,
 }: ReportSpeedBoxProps): React.JSX.Element {
-  return <ContentBox>{children}</ContentBox>;
+  return <ContentBox height="h-full">{children}</ContentBox>;
 }

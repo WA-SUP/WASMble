@@ -20,11 +20,11 @@ export default function RootLayout({
   children,
 }: RootLayoutProps): React.JSX.Element {
   return (
-    <html lang="ko">
-      <body className={inter.className}>
+    <html lang="ko" className="h-full">
+      <body className="h-full">
         <Container>
           <Header />
-          {children}
+          <main className="flex-grow">{children}</main>
         </Container>
       </body>
     </html>

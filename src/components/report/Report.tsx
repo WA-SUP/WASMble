@@ -38,11 +38,11 @@ export default function Report({ data }: ReportProps): React.JSX.Element {
           }}
         />
       </div>
-      <div className="h-1/2 flex justify-between">
+      <div className="flex flex-col lg:flex-row justify-between gap-4 w-full">
         <ReportChartBox>
           <PerformanceComparisonChart data={data} />
         </ReportChartBox>
-        <div className="w-[35%] flex flex-col justify-between ml-1.5">
+        <div className="w-full lg:w-[35%] flex flex-col justify-between ml-1.5">
           <ReportSpeedBox>
             <SpeedReport data={data} />
           </ReportSpeedBox>
