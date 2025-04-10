@@ -15,35 +15,36 @@ import {
 export default function Guide(): React.JSX.Element {
   return (
     <div className="flex flex-col justify-between p-3 w-full h-full">
-      <div className="flex flex-row justify-between h-48 pb-3">
+      <div className="flex flex-col lg:flex-row justify-between h-auto pb-3 gap-4">
         <ContentBox
-          width="w-[48%]"
+          width="w-full lg:w-[48%]"
           borderColor="border-notice-border"
           bg="bg-color-notice"
         >
-          <h2 className="flex items-center font-semibold text-xl">
-            <span className="text-2xl mr-2">&#9888;</span>
+          <h2 className="flex items-center font-semibold text-lg sm:text-xl">
+            <span className="text-xl sm:text-2xl mr-2">&#9888;</span>
             Notice!
           </h2>
-          <ul className="mt-2 ml-6 list-disc vw-3 text-xs lg:text-sm 2xl:text-lg">
-            <li>데이터 타입은 원시값(Number, String)만 지원합니다.</li>
+          <ul className="mt-2 ml-4 list-disc text-xs sm:text-sm">
+            <li>데이터 타입은 원시값(Number)만 지원합니다.</li>
             <li>입력한 함수와 동일한 갯수의 매개변수를 입력해주세요.</li>
-            <li> 아래는 성능 비교 결과에 대한 예시입니다</li>
+            <li>아래는 성능 비교 결과에 대한 예시입니다.</li>
           </ul>
         </ContentBox>
-        <ContentBox width="w-[48%]">
-          <h2 className="flex items-center font-bold text-xs lg:text-sm 2xl:text-lg">
+
+        <ContentBox width="w-full lg:w-[48%]">
+          <h2 className="flex items-center font-bold text-sm sm:text-lg">
             <Image
               src="/folder_filled.svg"
               alt="Archive Logo Image"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               priority
               className="mr-1"
             />
             Archive
           </h2>
-          <ul className="mt-2 ml-6 list-disc vw-3 text-xs lg:text-sm 2xl:text-lg">
+          <ul className="mt-2 ml-4 list-disc text-xs sm:text-sm">
             <li>
               <Link href="/measurement-result/f675218f-b86f-41df-88c0-6736a9283a4d">
                 <span className="text-blue-500 hover:underline">
@@ -66,22 +67,23 @@ export default function Guide(): React.JSX.Element {
           </ul>
         </ContentBox>
       </div>
+
       <ContentBox custom="flex flex-col justify-around items-center gap-2">
         <GuideDiffEditor
           originalCode={GUIDE_DIFF_EDITOR_JS_VALUE}
           modifiedCode={GUIDE_DIFF_EDITOR_TRANSPILED_AS_VALUE}
         />
-        <div className="flex flex-row justify-around w-full h-full pt-3">
+        <div className="flex flex-col lg:flex-row justify-around w-full h-full pt-3 gap-4">
           <ContentBox
-            width="w-[64%]"
-            height="inherit"
+            width="w-full lg:w-[64%]"
+            height="auto"
             custom="flex flex-col justify-center"
           >
             <PerformanceComparisonChart data={GUIDE_MOCK_DATA} />
           </ContentBox>
           <ContentBox
-            width="w-[32%]"
-            height="inherit"
+            width="w-full lg:w-[32%]"
+            height="auto"
             custom="flex flex-col justify-center"
           >
             <SpeedReport data={GUIDE_MOCK_DATA} />

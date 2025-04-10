@@ -31,8 +31,8 @@ export default function SpeedReport({ data }: SpeedReportProps): JSX.Element {
         <Image
           src="/half-circle.svg"
           alt="Half Circle"
-          layout="fill"
-          objectFit="contain"
+          fill={true}
+          style={{ objectFit: "contain" }}
           className="absolute top-0 left-0 w-full h-1/2"
         />
       </div>

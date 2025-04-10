@@ -9,10 +9,7 @@ export default function ReportChartBox({
   children,
 }: ReportChartBoxProps): React.JSX.Element {
   return (
-    <ContentBox
-      width="w-[65%]"
-      custom="mr-1.5 flex justify-center items-center"
-    >
+    <ContentBox width="w-full" custom="mr-1.5 flex justify-center items-center">
       {children}
     </ContentBox>
   );

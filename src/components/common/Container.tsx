@@ -5,5 +5,5 @@ interface ContainerProps {
 export default function Container({
   children,
 }: ContainerProps): React.JSX.Element {
-  return <div className="flex flex-col w-full h-full">{children}</div>;
+  return <div className="flex flex-col min-h-screen w-full">{children}</div>;
 }
