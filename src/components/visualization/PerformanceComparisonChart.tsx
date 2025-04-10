@@ -42,7 +42,7 @@ export default function PerformanceComparisonChart({
       labels: labels,
       datasets: [
         {
-          label: "operations per second (higher is better)",
+          label: "초당 최대 실행 횟수",
           data: operationTimes,
           backgroundColor: Object.values(backgroundColors),
         },

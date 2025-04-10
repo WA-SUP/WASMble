@@ -26,9 +26,9 @@ export default function Guide(): React.JSX.Element {
             Notice!
           </h2>
           <ul className="mt-2 ml-6 list-disc vw-3 text-xs lg:text-sm 2xl:text-lg">
-            <li>데이터 타입은 원시값(Number, String)만 지원합니다.</li>
+            <li>데이터 타입은 원시값(Number)만 지원합니다.</li>
             <li>입력한 함수와 동일한 갯수의 매개변수를 입력해주세요.</li>
-            <li> 아래는 성능 비교 결과에 대한 예시입니다</li>
+            <li>아래는 성능 비교 결과에 대한 예시입니다.</li>
           </ul>
         </ContentBox>
         <ContentBox width="w-[48%]">
