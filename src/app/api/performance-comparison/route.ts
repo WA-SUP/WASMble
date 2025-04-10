@@ -51,7 +51,14 @@ export async function POST(request: Request): Promise<NextResponse> {
       | undefined
     )[] = JSON.parse(functionArguments);
 
-    const normalizedFunctionCode: string = functionCode.replace(/\n/g, "");
+    const cleanedFunctionCode = functionCode.replace(
+      /\/\/\s*your code\.\.\.\s*\n?/gi,
+      "",
+    );
+    const normalizedFunctionCode: string = cleanedFunctionCode.replace(
+      /\n/g,
+      "",
+    );
 
     const userCodeResult = await executeUserCode(
       normalizedFunctionCode,
