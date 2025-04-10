@@ -53,7 +53,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const normalizedFunctionCode: string = functionCode.replace(/\n/g, "");
 
-    const userCodeResult = await executeUserCode<unknown>(
+    const userCodeResult = await executeUserCode(
       normalizedFunctionCode,
       functionCall,
     );
